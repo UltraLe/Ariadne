@@ -13,7 +13,7 @@ public class Constants {
 
             public static String ID = "ID";
             public static String Type = "Type";
-            public static String Departure = "Departures";
+            public static String Departure = "Departure";
             public static String MeansOfTransp = "MeansOfTransp";
 
             public static String CreateQuery = "CREATE TABLE \""+TableName+"\" (" +

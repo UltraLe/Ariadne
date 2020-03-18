@@ -30,6 +30,12 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ricerca_);
 
+        //TODO, metti l'avviamento dell'activity nella main activity non nel manifest,
+        //TODO, (se metto la startActivity nella main mi apre sempre la tua)
+        //TODO non tocco nulla nel manifest per non fare danni
+        //startActivity(new Intent(this, SavedItinerariesActivity.class));
+        //TODO appena puoi rimodifica, non mi andava di scrivere sul tastierino del telefono
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
 
