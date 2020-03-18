@@ -8,16 +8,6 @@ public class MonumentsReturnedServer {
     //The server into the cloud will return an array (itineraries)
     //of array (monuments) of this class elements, in json format
 
-    public class ServerItineraries {
-
-        public MonumentsReturnedServer[][] Itineraries;
-
-        public ServerItineraries(MonumentsReturnedServer[][] itineraries){
-            this.Itineraries = itineraries;
-        }
-
-    }
-
     public String Name;
     public String Coordinates;
     public Byte[] Picture;
