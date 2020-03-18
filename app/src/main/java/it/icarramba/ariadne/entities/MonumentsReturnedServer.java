@@ -10,9 +10,9 @@ public class MonumentsReturnedServer {
 
     public class ServerItineraries {
 
-        public Vector<Vector<MonumentsReturnedServer>> Itineraries;
+        public MonumentsReturnedServer[][] Itineraries;
 
-        public ServerItineraries(Vector<Vector<MonumentsReturnedServer>> itineraries){
+        public ServerItineraries(MonumentsReturnedServer[][] itineraries){
             this.Itineraries = itineraries;
         }
 

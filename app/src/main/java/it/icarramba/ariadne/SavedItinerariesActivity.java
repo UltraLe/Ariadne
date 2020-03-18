@@ -35,12 +35,12 @@ public class SavedItinerariesActivity extends AppCompatActivity {
 
         System.out.println("JsonFile:\n"+jsonFile);
 
-        MonumentsReturnedServer.ServerItineraries serverItins;
+        MonumentsReturnedServer[][] serverItins;
 
-        serverItins = gson.fromJson(jsonFile, MonumentsReturnedServer.ServerItineraries.class);
+        serverItins = gson.fromJson(jsonFile, MonumentsReturnedServer[][].class);
 
         int numItin = 1;
-        for (Vector<MonumentsReturnedServer> itins : serverItins.Itineraries){
+        for (MonumentsReturnedServer[] itins : serverItins){
             System.out.println("\nItinerary number "+numItin);
             for (MonumentsReturnedServer mon : itins){
                 System.out.println("Name: "+mon.getName());

@@ -1,21 +1,21 @@
 [[
   {
   "Name": "Colosseo",
-  "Picture": "",
+  "Picture": [],
   "Coordinates": "lat1, lon1",
   "Position": "1",
   "ExpectedArrTime": "10:00"
   },
   {
   "Name": "Piazza Di Spagna",
-  "Picture": "",
+  "Picture": [],
   "Coordinates": "lat2, lon2",
   "Position": "2",
   "ExpectedArrTime": "12:00"
   },
   {
     "Name": "Piramide",
-    "Picture": "",
+    "Picture": [],
     "Coordinates": "lat3, lon3",
     "Position": "3",
     "ExpectedArrTime": "16:00"
@@ -24,21 +24,21 @@
   [
     {
       "Name": "Gelateria",
-      "Picture": "",
+      "Picture": [],
       "Coordinates": "lat1, lon1",
       "Position": "1",
       "ExpectedArrTime": "13:00"
     },
     {
       "Name": "CampusX",
-      "Picture": "",
+      "Picture": [],
       "Coordinates": "lat2, lon2",
       "Position": "2",
       "ExpectedArrTime": "20:00"
     },
     {
       "Name": "Mensa",
-      "Picture": "",
+      "Picture": [],
       "Coordinates": "lat3, lon3",
       "Position": "3",
       "ExpectedArrTime": "20:30"
