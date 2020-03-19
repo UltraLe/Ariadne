@@ -1,5 +1,6 @@
 package it.icarramba.ariadne;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -10,15 +11,28 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
-public class Ricerca_Activity extends AppCompatActivity implements OnSuccessListener {
+public class Ricerca_Activity extends AppCompatActivity implements OnSuccessListener, View.OnClickListener {
 
 
     private static final int PERMISSIONS_REQUEST_RESULT = 1;
@@ -67,14 +81,25 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
 
                     startSearchLocation();
                 } else {
-                    Toast.makeText(this, R.string.premission_required_str, Toast.LENGTH_LONG).show();                }
+                    Toast.makeText(this, R.string.premission_required_str, Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(this, MainActivity.class));
+                }
+
+            }
+            default: {
+                Toast.makeText(this, R.string.premission_required_str, Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this, MainActivity.class));
             }
         }
+
+
     }
 
     //Funzione che si attiva qunado una posizione viene trovata
     @Override
     public void onSuccess(Object o) {
+
+        //Il metodo è stato chiamato dal location listener
         Location location = (Location) o;
         positionView = findViewById(R.id.positionText);
         if (location != null) {
@@ -85,5 +110,12 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
             //Se non trovo la posizione metto un suggerimento nella box
             positionView.setHint(R.string.position_hint_str);
         }
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        //Aggiungere map activity
+
     }
 }
