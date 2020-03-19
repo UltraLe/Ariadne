@@ -30,20 +30,14 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ricerca_);
 
-        //TODO, metti l'avviamento dell'activity nella main activity non nel manifest,
-        //TODO, (se metto la startActivity nella main mi apre sempre la tua)
-        //TODO non tocco nulla nel manifest per non fare danni
-        startActivity(new Intent(this, SavedItinerariesActivity.class));
-        //TODO appena puoi rimodifica, non mi andava di scrivere sul tastierino del telefono
-
+        //Controllo se i permessi di locazione sono stati concessi
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-
-            Toast.makeText(this, "I have permissions", Toast.LENGTH_LONG).show();
+            //Sono stati concessi avvio la ricerca dell'ultima locazione
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             startSearchLocation();
         } else {
-            // Permission to access the location is missing. Show rationale and request permission
+            //Chedo i permessi se non mi sono stati dati
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_RESULT);
@@ -52,6 +46,7 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
 
     }
 
+    //Funzione per l'inizio della ricerca dell posizione
     private void startSearchLocation() {
         positionView = findViewById(R.id.positionText);
         Task<Location> locationTask = fusedLocationClient.getLastLocation();
@@ -60,7 +55,7 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
 
     //Prendo il risultato della richiesta dei permessi
     //Se si, cerca la posizione
-    //Se no, torna lla precedente activity
+    //Se no, torna alla precedente activity
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
@@ -70,24 +65,25 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    Toast.makeText(this, "Permesso dato", Toast.LENGTH_LONG).show();
+                    startSearchLocation();
                 } else {
-                    Toast.makeText(this, "Permesso non dato", Toast.LENGTH_LONG).show();                }
+                    Toast.makeText(this, R.string.premission_required_str, Toast.LENGTH_LONG).show();                }
             }
         }
     }
 
+    //Funzione che si attiva qunado una posizione viene trovata
     @Override
     public void onSuccess(Object o) {
-        // Got last known location. In some rare situations this can be null.
         Location location = (Location) o;
         positionView = findViewById(R.id.positionText);
         if (location != null) {
-            positionView.setText( location.toString());
+            positionView.setText(R.string.position_str);
             Toast.makeText(this, location.toString(), Toast.LENGTH_LONG).show();
 
         } else {
-            Toast.makeText(this, "Unable to find location", Toast.LENGTH_LONG).show();
+            //Se non trovo la posizione metto un suggerimento nella box
+            positionView.setHint(R.string.position_hint_str);
         }
     }
 }

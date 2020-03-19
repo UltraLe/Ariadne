@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Ariadne</string>
+    <string name="premission_required_str">Give location permission to access this activity</string>
+    <string name="position_str">Current position</string>
+    <string name="position_hint_str">Insert start address</string>
+    <string name="position_hint_str">Insert start address</string>
 </resources>

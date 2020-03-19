@@ -18,14 +18,15 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDqu0vKIoAvGQQPrkQzFea6RmAbdD3k1ww" />
 
-        <activity android:name=".Ricerca_Activity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Ricerca_Activity"/>
+        <activity android:name=".MainActivity" >
+        <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+
     </application>
 
 </manifest>
