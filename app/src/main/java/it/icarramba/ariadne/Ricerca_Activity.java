@@ -115,7 +115,7 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
 
     @Override
     public void onClick(View v) {
-        //Aggiungere map activity
+        //Aggiungere map activity  
 
     }
 }
