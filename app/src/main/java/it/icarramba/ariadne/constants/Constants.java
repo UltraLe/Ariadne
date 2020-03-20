@@ -2,6 +2,9 @@ package it.icarramba.ariadne.constants;
 
 public class Constants {
 
+    public static int ItineraryType_Saved = 1;
+    public static int ItineraryType_LastSearched = 2;
+
     public static class DBConstants {
 
         public static String DBName = "AriadneDB";

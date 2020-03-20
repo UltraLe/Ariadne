@@ -10,7 +10,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import it.icarramba.ariadne.entities.MonumentsReturnedServer;
+import it.icarramba.ariadne.control.DBManager;
+import it.icarramba.ariadne.entities.Itinerary;
+import it.icarramba.ariadne.entities.ItineraryMonument;
 
 public class SavedItinerariesActivity extends AppCompatActivity {
 
@@ -20,6 +22,8 @@ public class SavedItinerariesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_itinerari_salvati);
 
         mockServerCall();
+
+        //TODO once here implement DB+Task getItineray, and make the activity
     }
 
     private void mockServerCall(){
@@ -34,21 +38,27 @@ public class SavedItinerariesActivity extends AppCompatActivity {
 
         System.out.println("JsonFile:\n"+jsonFile);
 
-        MonumentsReturnedServer[][] serverItins;
+        Itinerary[] serverItins;
 
-        serverItins = gson.fromJson(jsonFile, MonumentsReturnedServer[][].class);
+        serverItins = gson.fromJson(jsonFile, Itinerary[].class);
 
         int numItin = 1;
-        for (MonumentsReturnedServer[] itins : serverItins){
+        for (Itinerary itin : serverItins){
             System.out.println("\nItinerary number "+numItin);
-            for (MonumentsReturnedServer mon : itins){
-                System.out.println("Name: "+mon.getName());
-                System.out.println("Coordinates: "+mon.getCoordinates());
-                System.out.println("Expected Arrival Time: "+mon.getExpectedArrTime());
-                System.out.println("Position: "+mon.getPosition());
+            for (ItineraryMonument itiMon : itin.getItineraryMonuments()){
+                System.out.println("Name: "+itiMon.getMonument().getName());
+                System.out.println("Coordinates: "+itiMon.getMonument().getCoordinates());
+                System.out.println("Expected Arrival Time: "+itiMon.getExpectedArrTime());
+                System.out.println("Position: "+itiMon.getPosition());
                 System.out.println("Picture: todo later...");
             }
             numItin++;
+        }
+
+        for (Itinerary itin : serverItins) {
+            //TODO let it make somehow by the asynk task DBTask !!!
+            DBManager.getInstance(this).insertItinerary(itin);
+
         }
 
     }
