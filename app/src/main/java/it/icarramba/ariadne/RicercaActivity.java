@@ -19,28 +19,19 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-/*scusa, ho dovuto commentare perche' mi da errore, devo aggiungere qualcosa nel gradle ?
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-*/
-
-public class Ricerca_Activity extends AppCompatActivity implements OnSuccessListener, View.OnClickListener {
+public class RicercaActivity extends AppCompatActivity implements OnSuccessListener, View.OnClickListener {
 
 
     private static final int PERMISSIONS_REQUEST_RESULT = 1;
     private TextView positionView;
     private FusedLocationProviderClient fusedLocationClient;
+    private LatLng currLocation = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +43,16 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
                 == PackageManager.PERMISSION_GRANTED) {
             //Sono stati concessi avvio la ricerca dell'ultima locazione
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            startSearchLocation();
+            //Prendo la posizione selezionata
+            double lat = getIntent().getDoubleExtra("Lat", 0);
+            double longi = getIntent().getDoubleExtra("Long", 0);
+
+            if (lat != 0) {
+                currLocation = new LatLng(lat,longi);
+                positionView = findViewById(R.id.positionText);
+                positionView.setText(R.string.selected_pos_str);
+            } else
+                startSearchLocation();
         } else {
             //Chedo i permessi se non mi sono stati dati
             ActivityCompat.requestPermissions(this,
@@ -107,7 +107,7 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
         positionView = findViewById(R.id.positionText);
         if (location != null) {
             positionView.setText(R.string.position_str);
-            Toast.makeText(this, location.toString(), Toast.LENGTH_LONG).show();
+            currLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
         } else {
             //Se non trovo la posizione metto un suggerimento nella box
@@ -118,7 +118,16 @@ public class Ricerca_Activity extends AppCompatActivity implements OnSuccessList
 
     @Override
     public void onClick(View v) {
-        //Aggiungere map activity  
+        //Passo la posizione corrente alla place picker
+        //0,0 se non ce l'ho
+        Intent intent = new Intent(getBaseContext(), PlacePickerActivity.class);
+        if (currLocation != null) {
+            intent.putExtra("Long", currLocation.longitude);
+            intent.putExtra("Lat", currLocation.latitude);
+        }
+
+        System.out.println(currLocation.toString());
+        startActivity(intent);
 
     }
 }
