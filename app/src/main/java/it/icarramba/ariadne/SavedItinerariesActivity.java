@@ -10,9 +10,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import it.icarramba.ariadne.control.DBManager;
-import it.icarramba.ariadne.entities.Itinerary;
-import it.icarramba.ariadne.entities.ItineraryMonument;
+import it.icarramba.ariadne.bean.DBQueryBean;
+import it.icarramba.ariadne.constants.Constants;
+import it.icarramba.ariadne.entities.Itinerary;;
+import it.icarramba.ariadne.tasks.DBTask;
 
 public class SavedItinerariesActivity extends AppCompatActivity {
 
@@ -23,7 +24,23 @@ public class SavedItinerariesActivity extends AppCompatActivity {
 
         mockServerCall();
 
-        //TODO once here implement DB+Task getItineray, and make the activity
+        //getting saved itineraries form DB
+        Itinerary[] itinSaved = null;
+        DBQueryBean queryBean = new DBQueryBean(DBQueryBean.GET, itinSaved, Constants.ItineraryType_Saved);
+        (new DBTask(this)).execute(queryBean);
+
+        //test if all was inserted/get correctly from DB
+        int numItin = 1;
+        for (Itinerary itin : itinSaved){
+            System.out.println("\nItinerary number "+numItin);
+            itin.showInfo();
+            numItin++;
+        }
+
+        //make stuff with itinSaved.
+        //.....
+
+
     }
 
     private void mockServerCall(){
@@ -44,23 +61,18 @@ public class SavedItinerariesActivity extends AppCompatActivity {
 
         int numItin = 1;
         for (Itinerary itin : serverItins){
+
             System.out.println("\nItinerary number "+numItin);
-            for (ItineraryMonument itiMon : itin.getItineraryMonuments()){
-                System.out.println("Name: "+itiMon.getMonument().getName());
-                System.out.println("Coordinates: "+itiMon.getMonument().getCoordinates());
-                System.out.println("Expected Arrival Time: "+itiMon.getExpectedArrTime());
-                System.out.println("Position: "+itiMon.getPosition());
-                System.out.println("Picture: todo later...");
-            }
+            itin.showInfo();
             numItin++;
+
+            //SETTING itinerary type saved
+            itin.setType(Constants.ItineraryType_Saved);
         }
 
-        for (Itinerary itin : serverItins) {
-            //TODO let it make somehow by the asynk task DBTask !!!
-            DBManager.getInstance(this).insertItinerary(itin);
-
-        }
-
+        //Inserting itineraries into the DB
+        DBQueryBean queryBean = new DBQueryBean(DBQueryBean.INSERT, serverItins, null);
+        (new DBTask(this)).execute(queryBean);
     }
 
     private String readJson(){

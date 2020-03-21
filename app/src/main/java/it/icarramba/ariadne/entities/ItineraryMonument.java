@@ -3,10 +3,10 @@ package it.icarramba.ariadne.entities;
 public class ItineraryMonument {
 
     private Monument Monument;
-    private String Position;
+    private int Position;
     private String ExpectedArrTime;
 
-    public ItineraryMonument(Monument monument, String position, String expectedArrTime){
+    public ItineraryMonument(Monument monument, int position, String expectedArrTime){
         this.ExpectedArrTime = expectedArrTime;
         this.Position = position;
         this.Monument = monument;
@@ -16,11 +16,11 @@ public class ItineraryMonument {
         return ExpectedArrTime;
     }
 
-    public String getPosition() {
+    public int getPosition() {
         return Position;
     }
 
-    public it.icarramba.ariadne.entities.Monument getMonument() {
+    public Monument getMonument() {
         return Monument;
     }
 }

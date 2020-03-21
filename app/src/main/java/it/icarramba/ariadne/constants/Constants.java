@@ -2,8 +2,8 @@ package it.icarramba.ariadne.constants;
 
 public class Constants {
 
-    public static int ItineraryType_Saved = 1;
-    public static int ItineraryType_LastSearched = 2;
+    public static String ItineraryType_Saved = "SAVED";
+    public static String ItineraryType_LastSearched = "LAST";
 
     public static class DBConstants {
 
@@ -20,12 +20,10 @@ public class Constants {
             public static String MeansOfTransp = "MeansOfTransp";
 
             public static String CreateQuery = "CREATE TABLE \""+TableName+"\" (" +
-                                                    "\""+ID+"\" TEXT NOT NULL, " +
+                                                    "\""+ID+"\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                                                     "\""+Type+"\" TEXT NOT NULL, " +
                                                     "\""+Departure+"\" TEXT NOT NULL, " +
-                                                    "\""+MeansOfTransp+"\" TEXT NOT NULL, " +
-                                                    "PRIMARY KEY(\""+ID+"\"))";
-
+                                                    "\""+MeansOfTransp+"\" TEXT NOT NULL)";
         }
 
         public static class ItineraryMonuments{
@@ -55,11 +53,13 @@ public class Constants {
             public static String Name = "Name";
             public static String Picture = "Picture";
             public static String Coordinates = "Coordinates";
+            public static String Description = "Description";
 
             public static String CreateQuery = "CREATE TABLE \""+TableName+"\" ( " +
                                                     "\""+Name+"\"\tTEXT NOT NULL, " +
                                                     "\""+Picture+"\"\tBLOB, " +
-                                                    "\""+Coordinates+"\" TEXT NOT NULL, \"Description\" TEXT, " +
+                                                    "\""+Coordinates+"\" TEXT NOT NULL, " +
+                                                    "\""+Description+"\" TEXT, " +
                                                     "PRIMARY KEY(\""+Name+"\"))";
 
         }

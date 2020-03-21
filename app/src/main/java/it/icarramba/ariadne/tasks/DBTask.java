@@ -5,9 +5,11 @@ import android.os.AsyncTask;
 
 import java.lang.ref.WeakReference;
 
+import it.icarramba.ariadne.bean.DBQueryBean;
 import it.icarramba.ariadne.control.DBManager;
+import it.icarramba.ariadne.entities.Itinerary;
 
-public class DBTask extends AsyncTask<String, String, String> {
+public class DBTask extends AsyncTask<DBQueryBean, Void, Void> {
 
     private WeakReference<Activity> reference;
     private DBManager dbManager;
@@ -18,17 +20,30 @@ public class DBTask extends AsyncTask<String, String, String> {
     }
 
     @Override
-    protected String doInBackground(String... strings) {
-        //this method has to perform db queries
+    protected Void doInBackground(DBQueryBean... dbQueries) {
+
+       if(dbQueries[0].getQuery().equals(DBQueryBean.INSERT)){
+
+           //Inserting the itineraries contained into the bean
+           for (Itinerary itinerary : dbQueries[0].getItineraries()){
+               dbManager.insertItinerary(itinerary);
+           }
+
+       }else{
+
+           //returning all the itineraries that has a specified type
+           String itinType = dbQueries[0].getType();
+           Itinerary[] itinerariesFound = dbManager.getItineraries(itinType);
+           dbQueries[0].setItineraries(itinerariesFound);
+
+       }
 
         return null;
     }
 
     @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-        //May be useful later
-        //((MyTextView)(reference.get().findViewById(R.id....))).setText(...);
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        //TODO make Toasts ! and handle DB exceptions
     }
-
 }

@@ -2,13 +2,13 @@ package it.icarramba.ariadne.entities;
 
 public class Itinerary {
 
-    private String ID;
+    private int ID;
     private String Type;
     private String Departure;
     private String MeansOfTransp;
     private ItineraryMonument[] ItineraryMonuments;
 
-    public Itinerary(String id, String type, String departure,
+    public Itinerary(int id, String type, String departure,
                      String meansOfTransp, ItineraryMonument[] itinMon){
         this.ID = id;
         this.Type = type;
@@ -21,7 +21,7 @@ public class Itinerary {
         return Departure;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
@@ -35,5 +35,19 @@ public class Itinerary {
 
     public String getType() {
         return Type;
+    }
+
+    public void setType(String type) {
+        Type = type;
+    }
+
+    public void showInfo(){
+        for (ItineraryMonument itiMon : ItineraryMonuments){
+            System.out.println("Position: "+itiMon.getPosition());
+            System.out.println("Monument Name: "+itiMon.getMonument().getName());
+            System.out.println("Coordinates: "+itiMon.getMonument().getCoordinates());
+            System.out.println("Expected Arrival Time: "+itiMon.getExpectedArrTime());
+            System.out.println("Picture: todo later...");
+        }
     }
 }
