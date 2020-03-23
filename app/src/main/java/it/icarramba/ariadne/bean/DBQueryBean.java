@@ -2,6 +2,7 @@ package it.icarramba.ariadne.bean;
 
 import it.icarramba.ariadne.entities.Itinerary;
 
+//TODO check if used later(in DBTask), otherwise delete it
 public class DBQueryBean {
 
     public static String INSERT = "INSERT";

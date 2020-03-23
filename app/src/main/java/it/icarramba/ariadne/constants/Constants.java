@@ -10,6 +10,8 @@ public class Constants {
         public static String DBName = "AriadneDB";
         public static int DBVersion = 1;
 
+        public static String[] ignoreDBExceptions = {"already exists", "constraint"};
+
         public static class Itineraries{
 
             public static String TableName = "Itineraries";
@@ -19,7 +21,7 @@ public class Constants {
             public static String Departure = "Departure";
             public static String MeansOfTransp = "MeansOfTransp";
 
-            public static String CreateQuery = "CREATE TABLE \""+TableName+"\" (" +
+            public static String CreateQuery = "CREATE TABLE IF NOT EXISTS \""+TableName+"\" (" +
                                                     "\""+ID+"\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                                                     "\""+Type+"\" TEXT NOT NULL, " +
                                                     "\""+Departure+"\" TEXT NOT NULL, " +
@@ -35,7 +37,7 @@ public class Constants {
             public static String Position = "Position";
             public static String ExpectedArrTime = "ExpectedArrTime";
 
-            public static String CreateQuery = "CREATE TABLE \""+TableName+"\" ("+
+            public static String CreateQuery = "CREATE TABLE IF NOT EXISTS \""+TableName+"\" ("+
                                                             "\""+ItineraryID+"\" INTEGER NOT NULL, "+
                                                             "\""+MonumentName+"\" TEXT NOT NULL, "+
                                                             "\""+Position+"\"\tINTEGER NOT NULL, "+
@@ -55,7 +57,7 @@ public class Constants {
             public static String Coordinates = "Coordinates";
             public static String Description = "Description";
 
-            public static String CreateQuery = "CREATE TABLE \""+TableName+"\" ( " +
+            public static String CreateQuery = "CREATE TABLE IF NOT EXISTS \""+TableName+"\" ( " +
                                                     "\""+Name+"\"\tTEXT NOT NULL, " +
                                                     "\""+Picture+"\"\tBLOB, " +
                                                     "\""+Coordinates+"\" TEXT NOT NULL, " +

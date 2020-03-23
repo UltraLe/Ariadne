@@ -4,16 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import it.icarramba.ariadne.bean.DBQueryBean;
 import it.icarramba.ariadne.constants.Constants;
-import it.icarramba.ariadne.entities.Itinerary;;
-import it.icarramba.ariadne.tasks.DBTask;
+import it.icarramba.ariadne.control.DBManager;
+import it.icarramba.ariadne.entities.Itinerary;
+import it.icarramba.ariadne.mockClasses.MockServerCall;
 
 public class SavedItinerariesActivity extends AppCompatActivity {
 
@@ -22,85 +16,22 @@ public class SavedItinerariesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerari_salvati);
 
-        mockServerCall();
+        (new MockServerCall(this)).mockServerCall();
 
         //getting saved itineraries form DB
         Itinerary[] itinSaved = null;
-        DBQueryBean queryBean = new DBQueryBean(DBQueryBean.GET, itinSaved, Constants.ItineraryType_Saved);
-        (new DBTask(this)).execute(queryBean);
+        itinSaved = DBManager.getInstance(this).getItineraries(Constants.ItineraryType_Saved);
 
         //test if all was inserted/get correctly from DB
         int numItin = 1;
         for (Itinerary itin : itinSaved){
-            System.out.println("\nItinerary number "+numItin);
+            System.out.println("\t\tITINERARY n." + numItin);
             itin.showInfo();
             numItin++;
+            System.out.print("\n\n");
         }
 
-        //make stuff with itinSaved.
-        //.....
+        //TODO make a cool activity
 
-
-    }
-
-    private void mockServerCall(){
-
-        //this method reads the mock itineraries json file,
-        //simulating the interaction with the server into the cloud,
-        //transforms it into an array of 'MonumentsReturnedServer' class
-        //and adds the data into the local DB.
-        Gson gson = new Gson();
-
-        String jsonFile = readJson();
-
-        System.out.println("JsonFile:\n"+jsonFile);
-
-        Itinerary[] serverItins;
-
-        serverItins = gson.fromJson(jsonFile, Itinerary[].class);
-
-        int numItin = 1;
-        for (Itinerary itin : serverItins){
-
-            System.out.println("\nItinerary number "+numItin);
-            itin.showInfo();
-            numItin++;
-
-            //SETTING itinerary type saved
-            itin.setType(Constants.ItineraryType_Saved);
-        }
-
-        //Inserting itineraries into the DB
-        DBQueryBean queryBean = new DBQueryBean(DBQueryBean.INSERT, serverItins, null);
-        (new DBTask(this)).execute(queryBean);
-    }
-
-    private String readJson(){
-
-        String jsonTesterFile = "MockItineraries.json";
-        BufferedReader reader = null;
-        String jsonFile = "";
-
-        try {
-            reader = new BufferedReader(
-                    new InputStreamReader(getAssets().open(jsonTesterFile), "UTF-8"));
-
-            String mLine;
-            while ((mLine = reader.readLine()) != null) {
-                jsonFile += mLine;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return jsonFile;
     }
 }

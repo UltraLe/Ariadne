@@ -41,6 +41,10 @@ public class Itinerary {
         Type = type;
     }
 
+    public void setMeansOfTransp(String meansOfTransp) {
+        MeansOfTransp = meansOfTransp;
+    }
+
     public void showInfo(){
         for (ItineraryMonument itiMon : ItineraryMonuments){
             System.out.println("Position: "+itiMon.getPosition());

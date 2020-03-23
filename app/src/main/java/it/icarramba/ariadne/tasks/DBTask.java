@@ -1,14 +1,18 @@
 package it.icarramba.ariadne.tasks;
 
 import android.app.Activity;
+import android.database.SQLException;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
+import it.icarramba.ariadne.R;
 import it.icarramba.ariadne.bean.DBQueryBean;
 import it.icarramba.ariadne.control.DBManager;
 import it.icarramba.ariadne.entities.Itinerary;
 
+//TODO check if used later, otherwise delete it
 public class DBTask extends AsyncTask<DBQueryBean, Void, Void> {
 
     private WeakReference<Activity> reference;
@@ -26,14 +30,28 @@ public class DBTask extends AsyncTask<DBQueryBean, Void, Void> {
 
            //Inserting the itineraries contained into the bean
            for (Itinerary itinerary : dbQueries[0].getItineraries()){
-               dbManager.insertItinerary(itinerary);
+               System.out.println("Inserting values");
+               try {
+                   dbManager.insertItinerary(itinerary);
+               }catch (SQLException e){
+                   if(DBManager.getInstance(reference.get()).shouldRaiseDBException(e.getMessage())){
+                       Toast.makeText(reference.get(), R.string.db_exception, Toast.LENGTH_SHORT).show();
+                   }
+               }
            }
 
        }else{
 
            //returning all the itineraries that has a specified type
            String itinType = dbQueries[0].getType();
-           Itinerary[] itinerariesFound = dbManager.getItineraries(itinType);
+           Itinerary[] itinerariesFound = null;
+           try {
+               itinerariesFound = dbManager.getItineraries(itinType);
+           }catch(SQLException e){
+               if(DBManager.getInstance(reference.get()).shouldRaiseDBException(e.getMessage())){
+                   Toast.makeText(reference.get(), R.string.db_exception, Toast.LENGTH_SHORT).show();
+               }
+           }
            dbQueries[0].setItineraries(itinerariesFound);
 
        }
@@ -44,6 +62,6 @@ public class DBTask extends AsyncTask<DBQueryBean, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        //TODO make Toasts ! and handle DB exceptions
+
     }
 }
