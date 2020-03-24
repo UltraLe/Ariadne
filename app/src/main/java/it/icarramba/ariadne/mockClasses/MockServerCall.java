@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.SQLException;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -15,10 +16,25 @@ import it.icarramba.ariadne.R;
 import it.icarramba.ariadne.constants.Constants;
 import it.icarramba.ariadne.control.DBManager;
 import it.icarramba.ariadne.entities.Itinerary;
+import it.icarramba.ariadne.enums.Trasport;
 
 public class MockServerCall {
 
     private WeakReference<Activity> reference;
+
+    //Fake HTTP Request to server
+    public int sendReqeust(LatLng position, int interval, Trasport transChoice) {
+        //Traspoto = 1, a piedi
+        //Trasporto = 2, macchina
+
+        //Struttura della richiesta
+        //http get /ip-server?latitude=...&longitute=...&interval=...&trans=...
+
+        //Wait here for response
+        int response = 200;
+        return response;
+
+    }
 
     public MockServerCall(Activity activity){
         this.reference = new WeakReference<>(activity);

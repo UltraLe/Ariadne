@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import it.icarramba.ariadne.enums.Trasport;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,10 +14,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.internal.FallbackServiceBroker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.MapView;
@@ -25,18 +31,26 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-public class RicercaActivity extends AppCompatActivity implements OnSuccessListener, View.OnClickListener {
+public class RicercaActivity extends AppCompatActivity implements OnSuccessListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
 
     private static final int PERMISSIONS_REQUEST_RESULT = 1;
     private TextView positionView;
     private FusedLocationProviderClient fusedLocationClient;
     private LatLng currLocation = null;
+    private Trasport currChoice = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ricerca_);
+
+        //Impost i listener dei toggle button
+        ToggleButton footButton = findViewById(R.id.footButton);
+        ToggleButton carButton = findViewById(R.id.carButton);
+
+        footButton.setOnCheckedChangeListener(this);
+        carButton.setOnCheckedChangeListener(this);
 
         //Controllo se i permessi di locazione sono stati concessi
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -118,16 +132,51 @@ public class RicercaActivity extends AppCompatActivity implements OnSuccessListe
 
     @Override
     public void onClick(View v) {
-        //Passo la posizione corrente alla place picker
-        //0,0 se non ce l'ho
-        Intent intent = new Intent(getBaseContext(), PlacePickerActivity.class);
-        if (currLocation != null) {
-            intent.putExtra("Long", currLocation.longitude);
-            intent.putExtra("Lat", currLocation.latitude);
+
+        if (v.getId() == R.id.positionText) {
+            //Passo la posizione corrente alla place picker
+            //0,0 se non ce l'ho
+            Intent intent = new Intent(getBaseContext(), PlacePickerActivity.class);
+            if (currLocation != null) {
+                intent.putExtra("Long", currLocation.longitude);
+                intent.putExtra("Lat", currLocation.latitude);
+            }
+
+            startActivity(intent);
+        } else if (v.getId() == R.id.confirmButton) {
+
+            Toast.makeText(this, currChoice.toString(), Toast.LENGTH_LONG).show();
+
         }
 
-        System.out.println(currLocation.toString());
-        startActivity(intent);
+    }
+
+    //Chiamata epr i toggle
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        //Attivo uno disattivo l'altro
+        //Impost la current choice
+        //Toast.makeText(this, String.valueOf(buttonView.getId()), Toast.LENGTH_LONG).show();
+
+        if (buttonView.getId() == R.id.footButton && isChecked) {
+
+            ToggleButton carsButton = findViewById(R.id.carButton);
+
+            buttonView.setChecked(true);
+            carsButton.setChecked(false);
+            currChoice = Trasport.Foot;
+
+        } else if (isChecked){
+
+            ToggleButton footButton = findViewById(R.id.footButton);
+
+            buttonView.setChecked(true);
+            footButton.setChecked(false);
+
+            currChoice = Trasport.Car;
+
+        }
 
     }
 }
