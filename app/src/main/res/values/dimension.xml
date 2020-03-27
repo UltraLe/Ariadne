@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_dim">40sp</dimen>
+    <dimen name="image_width">150sp</dimen>
+    <dimen name="image_height">150sp</dimen>
+    <dimen name="monum_name_max">40sp</dimen>
+    <dimen name="monum_name_min">10sp</dimen>
+    <dimen name="exp_arr_time">40sp</dimen>
+</resources>

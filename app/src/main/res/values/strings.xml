@@ -7,4 +7,6 @@
     <string name="no_loc_string">No location picked</string>
     <string name="selected_pos_str">Selected Position</string>
     <string name="db_exception">An error has occurred in the DB</string>
+    <string name="exp_arr">Expected Arrival Time</string>
+    <string name="image_cont_desct">Monument Image</string>
 </resources>

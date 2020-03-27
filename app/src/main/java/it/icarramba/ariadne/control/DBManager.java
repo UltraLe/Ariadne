@@ -56,6 +56,7 @@ public class DBManager extends SQLiteOpenHelper {
         }
     }
 
+    //TODO fix exception is not thrown !!! :(
     private void insertItinerary(String type, String departure, String meansOfTransp) throws SQLException{
         ContentValues cv = new ContentValues();
         cv.put(Constants.DBConstants.Itineraries.Type, type);
@@ -83,6 +84,26 @@ public class DBManager extends SQLiteOpenHelper {
         cv.put(Constants.DBConstants.ItineraryMonuments.ExpectedArrTime, expArrTime);
 
         db.insert(Constants.DBConstants.ItineraryMonuments.TableName, null, cv);
+    }
+
+    //stupid method that checks if any itinerary of a selected type
+    //is present in the db. Implemented for testing purpose
+    public boolean isThereItinerary(String type){
+        String query = "select ID " +
+                        "from " +Constants.DBConstants.Itineraries.TableName+" "+
+                        "where Type == '"+type+"';";
+
+        Cursor cursor = db.rawQuery(query, null);
+        //printQuery(cursor);
+        if (!(cursor.moveToFirst()) || cursor.getCount() == 0){
+            cursor.close();
+            return false;
+        }
+
+        //if i'm here, there is some itinerary
+        //to be used for testing purpose
+        cursor.close();
+        return true;
     }
 
     //The server into the cloud will return a list of itinerary,

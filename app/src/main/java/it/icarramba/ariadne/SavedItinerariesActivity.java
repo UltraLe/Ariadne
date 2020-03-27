@@ -3,6 +3,7 @@ package it.icarramba.ariadne;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import it.icarramba.ariadne.constants.Constants;
 import it.icarramba.ariadne.control.DBManager;
@@ -11,12 +12,18 @@ import it.icarramba.ariadne.mockClasses.MockServerCall;
 
 public class SavedItinerariesActivity extends AppCompatActivity {
 
+    private TextView title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerari_salvati);
 
-        (new MockServerCall(this)).mockServerCall();
+        title = findViewById(R.id.tvSITitle);
+        //title.setBackground(getDrawable(R.drawable.colosseo));
+
+        //inserting mock 'saved' itineraries
+        (new MockServerCall(this)).mockServerCall(Constants.ItineraryType_Saved);
 
         //getting saved itineraries form DB
         Itinerary[] itinSaved = null;

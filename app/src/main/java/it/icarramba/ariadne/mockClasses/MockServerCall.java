@@ -40,12 +40,18 @@ public class MockServerCall {
         this.reference = new WeakReference<>(activity);
     }
 
-    public void mockServerCall(){
+    public void mockServerCall(String typeToSave){
 
         //this method reads the mock itineraries json file,
         //simulating the interaction with the server into the cloud,
         //transforms it into an array of 'MonumentsReturnedServer' class
         //and adds the data into the local DB.
+
+        //if there are itineraries, do not insert others
+        if(DBManager.getInstance(reference.get()).isThereItinerary(typeToSave)){
+            return;
+        }
+
         Gson gson = new Gson();
 
         String jsonFile = readJson();
@@ -62,7 +68,7 @@ public class MockServerCall {
             numItin++;
 
             //SETTING itinerary type saved
-            itin.setType(Constants.ItineraryType_Saved);
+            itin.setType(typeToSave);
         }
 
         //Inserting itineraries into the DB

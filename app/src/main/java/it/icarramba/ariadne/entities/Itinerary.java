@@ -49,6 +49,7 @@ public class Itinerary {
         for (ItineraryMonument itiMon : ItineraryMonuments){
             System.out.println("Position: "+itiMon.getPosition());
             System.out.println("Monument Name: "+itiMon.getMonument().getName());
+            System.out.println("Monument Description: "+itiMon.getMonument().getDescription());
             System.out.println("Coordinates: "+itiMon.getMonument().getCoordinates());
             System.out.println("Expected Arrival Time: "+itiMon.getExpectedArrTime());
             System.out.println("Picture: todo later...");
