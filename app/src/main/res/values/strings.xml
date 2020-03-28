@@ -9,4 +9,10 @@
     <string name="db_exception">An error has occurred in the DB</string>
     <string name="exp_arr">Expected Arrival Time</string>
     <string name="image_cont_desct">Monument Image</string>
+    <string name="title_iti_sav">Saved Itineraries</string>
+    <string name="iti_num">Itinerary</string>
+    <string name="save">Save</string>
+    <string name="saved">Saved</string>
+    <string name="deleate">Delete</string>
+    <string name="deleated">Deleted</string>
 </resources>

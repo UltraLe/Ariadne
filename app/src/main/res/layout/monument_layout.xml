@@ -6,7 +6,8 @@
     android:id="@+id/ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:orientation="vertical">
 
 
     <androidx.cardview.widget.CardView
@@ -19,14 +20,12 @@
 
             <TextView
                 android:id="@+id/monumTitleItin"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:text="Colosseo"
                 android:textAlignment="center"
                 android:textSize="@dimen/monum_name_max"
@@ -36,31 +35,59 @@
 
             <ImageView
                 android:id="@+id/monImageItin"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/image_width"
                 android:layout_height="@dimen/image_height"
-                android:layout_below="@+id/monumTitleItin"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="0dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:contentDescription="@string/image_cont_desct"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/monumDescriprion"
+                android:id="@+id/monumPos"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentTop="false"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@+id/monumTitleItin"
+                android:layout_toEndOf="@+id/monImageItin"
+                android:text="1"
+                android:textAlignment="center"
+                android:textSize="@dimen/monum_name_max"
+                app:autoSizeMaxTextSize="@dimen/monum_name_max"
+                app:autoSizeMinTextSize="@dimen/monum_name_min"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/monImageItin"
-                android:layout_alignParentStart="true"
+                android:layout_below="@+id/monumTitleItin"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="What a beautiful description !" />
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="0dp"
+                android:layout_toEndOf="@+id/monImageItin"
+                android:text="@string/exp_arr"
+                android:textAlignment="center"
+                android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/expArrTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView3"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toEndOf="@+id/monImageItin"
+                android:text="10:00"
+                android:textSize="@dimen/exp_arr_time" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
