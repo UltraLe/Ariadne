@@ -11,7 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".RicercaActivity">
+        tools:context=".RicercaActivity"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <ImageView
             android:id="@+id/logoView"
@@ -31,8 +33,8 @@
             android:layout_marginTop="104dp"
             android:ems="10"
             android:inputType="textPersonName"
+            android:focusableInTouchMode="false"
             android:onClick="onClick"
-            android:text="Name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/logoView" />
@@ -43,10 +45,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="84dp"
             android:ems="10"
-            android:inputType="number"
+            android:inputType="time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/positionText" />
+            app:layout_constraintTop_toBottomOf="@+id/positionText"
+            android:imeOptions="actionDone"
+            />
 
         <!-- TODO add images to toggle buttons -->
         <ToggleButton

@@ -15,4 +15,7 @@
     <string name="saved">Saved</string>
     <string name="deleate">Delete</string>
     <string name="deleated">Deleted</string>
+    <string name="no_position_err_str">Start position is empty</string>
+    <string name="bad_time_str">Interval format is not correct</string>
+    <string name="no_transport_str">Transport not specified</string>
 </resources>

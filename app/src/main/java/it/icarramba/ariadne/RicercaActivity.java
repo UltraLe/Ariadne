@@ -5,17 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import it.icarramba.ariadne.enums.Trasport;
+import it.icarramba.ariadne.mockClasses.MockServerCall;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +37,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-public class RicercaActivity extends AppCompatActivity implements OnSuccessListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class RicercaActivity extends AppCompatActivity implements TextView.OnEditorActionListener,OnSuccessListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
 
     private static final int PERMISSIONS_REQUEST_RESULT = 1;
@@ -145,7 +151,32 @@ public class RicercaActivity extends AppCompatActivity implements OnSuccessListe
             startActivity(intent);
         } else if (v.getId() == R.id.confirmButton) {
 
-            Toast.makeText(this, currChoice.toString(), Toast.LENGTH_LONG).show();
+            //Controlla se la posizione è inserita
+            positionView = findViewById(R.id.positionText);
+            if (positionView.getText() == "") {
+                Toast.makeText(this, R.string.no_position_err_str, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            //Controllo se l'intervallo è stato inserito
+            EditText timeView = findViewById(R.id.intervalloText);
+            String timeString = timeView.getText().toString();
+            if (!timeString.matches("\\d+:\\d{2}")) {
+                Toast.makeText(this, R.string.bad_time_str, Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (currChoice == null) {
+                Toast.makeText(this, R.string.no_transport_str, Toast.LENGTH_LONG).show();
+                return;
+            }
+            //in minutes
+            String[] splitted = timeString.split(":");
+            int chosenIntervall = Integer.parseInt(splitted[0])*60+Integer.parseInt(splitted[1]);
+
+            new MockServerCall(this).sendReqeust(currLocation, chosenIntervall, currChoice);
+            Toast.makeText(this, String.valueOf(currLocation.latitude) + String.valueOf(currLocation.longitude) + String.valueOf(chosenIntervall) + currChoice.toString(), Toast.LENGTH_LONG).show();
+
+            //Toast.makeText(this, currChoice.toString(), Toast.LENGTH_LONG).show();
 
         }
 
@@ -156,7 +187,7 @@ public class RicercaActivity extends AppCompatActivity implements OnSuccessListe
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
         //Attivo uno disattivo l'altro
-        //Impost la current choice
+        //Imposto la current choice
         //Toast.makeText(this, String.valueOf(buttonView.getId()), Toast.LENGTH_LONG).show();
 
         if (buttonView.getId() == R.id.footButton && isChecked) {
@@ -179,4 +210,16 @@ public class RicercaActivity extends AppCompatActivity implements OnSuccessListe
         }
 
     }
+
+    //Chiudi tastiera quando clicchi "done"
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            return true;
+        }
+        return false;
+    }
+
 }
