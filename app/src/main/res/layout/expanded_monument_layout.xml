@@ -30,9 +30,7 @@
                 android:layout_marginEnd="0dp"
                 android:text="Colosseo"
                 android:textAlignment="center"
-                android:textSize="@dimen/monum_name_max"
-                app:autoSizeMaxTextSize="@dimen/monum_name_max"
-                app:autoSizeMinTextSize="@dimen/monum_name_min"
+                android:textSize="@dimen/monum_name"
                 app:autoSizeTextType="uniform" />
 
             <ImageView

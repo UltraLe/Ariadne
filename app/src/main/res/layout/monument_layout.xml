@@ -4,34 +4,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/monumTitleItin"
+                android:id="@+id/monumPos"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="Colosseo"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="5dp"
+                android:layout_toEndOf="@+id/monImageItin"
+                android:text="1"
                 android:textAlignment="center"
-                android:textSize="@dimen/monum_name_max"
-                app:autoSizeMaxTextSize="@dimen/monum_name_max"
-                app:autoSizeMinTextSize="@dimen/monum_name_min"
-                app:autoSizeTextType="uniform" />
+                android:textSize="@dimen/monum_name"
+                app:autoSizeTextType="none" />
 
             <ImageView
                 android:id="@+id/monImageItin"
@@ -42,52 +41,77 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:contentDescription="@string/image_cont_desct"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:visibility="visible"
+                tools:src="@drawable/colosseo"
+                tools:visibility="visible" />
 
-            <TextView
-                android:id="@+id/monumPos"
+            <TableLayout
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentTop="false"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_toStartOf="@+id/monumTitleItin"
-                android:layout_toEndOf="@+id/monImageItin"
-                android:text="1"
-                android:textAlignment="center"
-                android:textSize="@dimen/monum_name_max"
-                app:autoSizeMaxTextSize="@dimen/monum_name_max"
-                app:autoSizeMinTextSize="@dimen/monum_name_min"
-                app:autoSizeTextType="uniform" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/monumTitleItin"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="0dp"
-                android:layout_toEndOf="@+id/monImageItin"
-                android:text="@string/exp_arr"
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/monumPos">
 
-            <TextView
-                android:id="@+id/expArrTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView3"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="70dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="10dp"
-                android:layout_toEndOf="@+id/monImageItin"
-                android:text="10:00"
-                android:textSize="@dimen/exp_arr_time" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/monumTitleItin"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:maxWidth="@dimen/max_card_length"
+                        android:text="Colosseo"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/monum_name"
+                        app:autoSizeMaxTextSize="@dimen/monum_name"
+                        app:autoSizeTextType="none" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:gravity="center"
+                        android:text="@string/exp_arr"
+                        android:textAlignment="center"
+                        android:textSize="20sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/expArrTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="40dp"
+                        android:gravity="center"
+                        android:text="10:00"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/exp_arr_time" />
+
+                </TableRow>
+
+            </TableLayout>
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

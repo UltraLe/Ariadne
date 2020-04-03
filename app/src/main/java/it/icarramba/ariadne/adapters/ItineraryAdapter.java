@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
+
 import it.icarramba.ariadne.R;
 import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.entities.ItineraryMonument;
@@ -68,12 +70,13 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
         holder.position.setText(String.valueOf(itiMon[position].getPosition()));
 
         //if the monument has an image
-        if(itiMon[position].getMonument().getPicture() != null){
+        if(itiMon[position].getMonument().getPicture().length > 0){
             Bitmap bitmap = BitmapFactory.decodeByteArray(itiMon[position].getMonument().getPicture(),
                                         0, itiMon[position].getMonument().getPicture().length);
             holder.picture.setImageBitmap(bitmap);
         }else{
             //TODO something like image not found
+            holder.picture.setImageResource(R.drawable.colosseo);
         }
 
     }
