@@ -23,7 +23,7 @@ public class MockServerCall {
     private WeakReference<Activity> reference;
 
     //Fake HTTP Request to server
-    public int sendReqeust(LatLng position, int interval, Trasport transChoice) {
+    public String sendReqeust(LatLng position, int interval, Trasport transChoice) throws Exception {
         //Traspoto = 1, a piedi
         //Trasporto = 2, macchina
 
@@ -32,7 +32,12 @@ public class MockServerCall {
 
         //Wait here for response
         int response = 200;
-        return response;
+        if (response != 200) {
+            throw new Exception("Cannot complete request");
+        }
+        //Useless http header
+        String itineraryInfo = "dummy";
+        return itineraryInfo;
 
     }
 

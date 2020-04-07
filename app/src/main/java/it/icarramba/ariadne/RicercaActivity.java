@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -172,10 +173,18 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
             //in minutes
             String[] splitted = timeString.split(":");
             int chosenIntervall = Integer.parseInt(splitted[0])*60+Integer.parseInt(splitted[1]);
+            String json_res;
+            try {
+                json_res = new MockServerCall(this).sendReqeust(currLocation, chosenIntervall, currChoice);
+            } catch (Exception e) {
+                Toast.makeText(this, getString(R.string.no_transport_str), Toast.LENGTH_LONG).show();
+                return;
+            }
+            //Toast.makeText(this, String.valueOf(currLocation.latitude) + String.valueOf(currLocation.longitude) + String.valueOf(chosenIntervall) + currChoice.toString(), Toast.LENGTH_LONG).show();
 
-            new MockServerCall(this).sendReqeust(currLocation, chosenIntervall, currChoice);
-            Toast.makeText(this, String.valueOf(currLocation.latitude) + String.valueOf(currLocation.longitude) + String.valueOf(chosenIntervall) + currChoice.toString(), Toast.LENGTH_LONG).show();
-
+            Bundle toPass = new Bundle();
+            toPass.putString("Itineraries", json_res);
+            //Start Itineraries activity
             //Toast.makeText(this, currChoice.toString(), Toast.LENGTH_LONG).show();
 
         }
@@ -189,7 +198,6 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
         //Attivo uno disattivo l'altro
         //Imposto la current choice
         //Toast.makeText(this, String.valueOf(buttonView.getId()), Toast.LENGTH_LONG).show();
-
         if (buttonView.getId() == R.id.footButton && isChecked) {
 
             ToggleButton carsButton = findViewById(R.id.carButton);
