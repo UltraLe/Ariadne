@@ -1,5 +1,6 @@
 package it.icarramba.ariadne.adapters;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -11,8 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Arrays;
-
 import it.icarramba.ariadne.R;
 import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.entities.ItineraryMonument;
@@ -22,7 +21,7 @@ import it.icarramba.ariadne.entities.ItineraryMonument;
 //the one that lists the monuments in an itinerary
 public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.SavedItinerariesViewHolder> {
 
-    private Itinerary itinerary;
+    public Itinerary itinerary;
 
     public ItineraryAdapter(Itinerary itinerary){
         this.itinerary = itinerary;
@@ -35,10 +34,11 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
         public TextView name;
         public TextView position;
         public TextView expectedArrTime;
+        public String monumDescription;
 
         public SavedItinerariesViewHolder(View v) {
             super(v);
-            name = v.findViewById(R.id.monumTitleItin);
+            name = v.findViewById(R.id.expMonTitle);
             picture = v.findViewById(R.id.monImageItin);
             position = v.findViewById(R.id.monumPos);
             expectedArrTime = v.findViewById(R.id.expArrTime);
@@ -49,7 +49,21 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
         @Override
         public void onClick(View v) {
             //when a monument is clicked, diplay a dialog with the monument_layout
-            //TODO
+            AlertDialog dialog;
+
+            View monumentDialogView = LayoutInflater.from(v.getContext()).inflate
+                    (R.layout.expanded_monument_layout, null);
+
+            dialog = new AlertDialog.Builder(v.getContext())
+                    .setView(monumentDialogView)
+                    .setCancelable(true).create();
+
+            ((TextView)monumentDialogView.findViewById(R.id.expMonTitle)).setText(((TextView)v.findViewById(R.id.expMonTitle)).getText());
+            //TODO fix
+            ((ImageView)monumentDialogView.findViewById(R.id.monImageItin)).setImageMatrix(((ImageView)v.findViewById(R.id.monImageItin)).getImageMatrix());
+            ((TextView)monumentDialogView.findViewById(R.id.monumDescription)).setText(monumDescription);
+
+            dialog.show();
         }
     }
 
@@ -68,6 +82,13 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
         holder.name.setText(itiMon[position].getMonument().getName());
         holder.expectedArrTime.setText(itiMon[position].getExpectedArrTime());
         holder.position.setText(String.valueOf(itiMon[position].getPosition()));
+        if(itiMon[position].getMonument().getDescription() == null){
+            //TODO insert somehting into R.strings
+            holder.monumDescription = "Description not found";
+        }else{
+            holder.monumDescription = itiMon[position].getMonument().getDescription();
+        }
+
 
         //if the monument has an image
         if(itiMon[position].getMonument().getPicture().length > 0){

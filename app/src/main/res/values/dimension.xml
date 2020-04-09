@@ -6,5 +6,5 @@
     <dimen name="monum_name">30sp</dimen>
     <dimen name="exp_arr_time">40sp</dimen>
     <dimen name="iti_num">20sp</dimen>
-    <dimen name="max_card_length">500sp</dimen>
+    <dimen name="max_card_length">300sp</dimen>
 </resources>

@@ -172,7 +172,7 @@ public class DBManager extends SQLiteOpenHelper {
                                 +Constants.DBConstants.ItineraryMonuments.TableName+" IM on I.ID join "
                                 +Constants.DBConstants.Monuments.TableName+" M " +
                          "where IM.ItineraryID == I.ID and I.Type == '"+type+"' and IM.MonumentName == M.Name "+
-                         "ORDER BY I."+Constants.DBConstants.Itineraries.ID+";";
+                         "ORDER BY I."+Constants.DBConstants.Itineraries.ID+", IM."+Constants.DBConstants.ItineraryMonuments.Position+";";
 
         Cursor cursor = db.rawQuery(query, null);
         //printQuery(cursor);
