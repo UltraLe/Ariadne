@@ -1,8 +1,11 @@
 package it.icarramba.ariadne;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -57,7 +60,9 @@ public class PlacePickerActivity extends AppCompatActivity implements OnMapReady
 
         map = googleMap;
         map.getUiSettings().setMyLocationButtonEnabled(true);
-        map.setMyLocationEnabled(true);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+            map.setMyLocationEnabled(true);
 
         //Sposto la telecamera sulla posizione corrente se c'è
         //altrimenti su Roma

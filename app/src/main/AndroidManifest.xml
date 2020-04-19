@@ -15,8 +15,7 @@
         <activity android:name=".SearchedItinerariesActivity"></activity>
         <activity android:name=".PlacePickerActivity" />
         <activity android:name=".SavedItinerariesActivity" />
-        <activity android:name=".RicercaActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".RicercaActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

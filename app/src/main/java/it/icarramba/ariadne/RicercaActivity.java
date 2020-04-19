@@ -1,10 +1,13 @@
 package it.icarramba.ariadne;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import it.icarramba.ariadne.enums.Trasport;
+import it.icarramba.ariadne.listeners.DrawerListener;
 import it.icarramba.ariadne.mockClasses.MockServerCall;
 
 import android.Manifest;
@@ -17,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -37,6 +41,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 
 public class RicercaActivity extends AppCompatActivity implements TextView.OnEditorActionListener,OnSuccessListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
@@ -46,11 +51,17 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
     private FusedLocationProviderClient fusedLocationClient;
     private LatLng currLocation = null;
     private Trasport currChoice = null;
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ricerca_);
+        setContentView(R.layout.activity_ricerca_drawer);
+
+        //Set up drawer
+        DrawerSetUp();
 
         //Impost i listener dei toggle button
         ToggleButton footButton = findViewById(R.id.footButton);
@@ -59,20 +70,23 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
         footButton.setOnCheckedChangeListener(this);
         carButton.setOnCheckedChangeListener(this);
 
+        //Prendo la posizione selezionata
+        double lat = getIntent().getDoubleExtra("Lat", 0);
+        double longi = getIntent().getDoubleExtra("Long", 0);
+
+        if (lat != 0) {
+            currLocation = new LatLng(lat,longi);
+            positionView = findViewById(R.id.positionText);
+            positionView.setText(R.string.selected_pos_str);
+        }
+
         //Controllo se i permessi di locazione sono stati concessi
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             //Sono stati concessi avvio la ricerca dell'ultima locazione
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            //Prendo la posizione selezionata
-            double lat = getIntent().getDoubleExtra("Lat", 0);
-            double longi = getIntent().getDoubleExtra("Long", 0);
 
-            if (lat != 0) {
-                currLocation = new LatLng(lat,longi);
-                positionView = findViewById(R.id.positionText);
-                positionView.setText(R.string.selected_pos_str);
-            } else
+             if (lat == 0)
                 startSearchLocation();
         } else {
             //Chedo i permessi se non mi sono stati dati
@@ -97,25 +111,21 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_RESULT: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == PERMISSIONS_REQUEST_RESULT) {// If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Sono stati concessi avvio la ricerca dell'ultima locazione
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-                    startSearchLocation();
-                } else {
-                    Toast.makeText(this, R.string.premission_required_str, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(this, MainActivity.class));
-                }
-
-            }
-            default: {
+                startSearchLocation();
+                return;
+            } else {
                 Toast.makeText(this, R.string.premission_required_str, Toast.LENGTH_LONG).show();
-                startActivity(new Intent(this, MainActivity.class));
             }
         }
-
+        Toast.makeText(this, R.string.premission_required_str, Toast.LENGTH_LONG).show();
+        //Se non mi vengono dati i permessi metto un hint
+        positionView = findViewById(R.id.positionText);
+        positionView.setHint(R.string.position_hint_str);
 
     }
 
@@ -218,7 +228,30 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
         }
 
     }
+    //Drawer functions
+    private void DrawerSetUp() {
 
+        dl = findViewById(R.id.activity_ricerca_drawer_in);
+        t = new ActionBarDrawerToggle(this, dl,R.string.app_name, R.string.app_name);
+
+        dl.addDrawerListener(t);
+        t.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        nv = findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new DrawerListener(this));
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(t.onOptionsItemSelected(item))
+            return true;
+
+        return super.onOptionsItemSelected(item);
+    }
     //Chiudi tastiera quando clicchi "done"
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
