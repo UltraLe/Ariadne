@@ -72,7 +72,7 @@ public class MockServerCall {
             //itin.showInfo();
             numItin++;
 
-            //SETTING itinerary type saved
+            //SETTING itinerary type
             itin.setType(typeToSave);
         }
 

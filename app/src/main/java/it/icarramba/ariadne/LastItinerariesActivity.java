@@ -19,7 +19,7 @@ import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.listeners.DrawerListener;
 import it.icarramba.ariadne.mockClasses.MockServerCall;
 
-public class SearchedItinerariesActivity extends AppCompatActivity {
+public class LastItinerariesActivity extends AppCompatActivity {
 
     private RecyclerView rv;
     private DrawerLayout dl;
@@ -33,12 +33,10 @@ public class SearchedItinerariesActivity extends AppCompatActivity {
 
         DrawerSetUp();
 
-        ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.searched_iti_title));
+        ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.last_iti_title));
 
-        //TODO here the real server call
-        //inserting mock 'last searched' itineraries
+        //inserting mock 'saved' itineraries
         (new MockServerCall(this)).mockServerCall(Constants.ItineraryType_LastSearched);
-        //TODO once searched save into DB as 'Last Searched'
 
         //getting saved itineraries form DB
         Itinerary[] itinSaved = DBManager.getInstance(this).getItineraries(Constants.ItineraryType_LastSearched);
@@ -48,7 +46,6 @@ public class SearchedItinerariesActivity extends AppCompatActivity {
         for (Itinerary itin : itinSaved){
             System.out.println("\t\tITINERARY n." + numItin);
             itin.showInfo();
-            System.out.println("HashCode: "+itin.hashCode());
             numItin++;
             System.out.print("\n\n");
         }

@@ -16,13 +16,14 @@ public class Constants {
 
             public static String TableName = "Itineraries";
 
+            //this will be tha hash code of the itinerary object
             public static String ID = "ID";
             public static String Type = "Type";
             public static String Departure = "Departure";
             public static String MeansOfTransp = "MeansOfTransp";
 
             public static String CreateQuery = "CREATE TABLE IF NOT EXISTS \""+TableName+"\" (" +
-                                                    "\""+ID+"\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                                                    "\""+ID+"\" INTEGER NOT NULL PRIMARY KEY, " +
                                                     "\""+Type+"\" TEXT NOT NULL, " +
                                                     "\""+Departure+"\" TEXT NOT NULL, " +
                                                     "\""+MeansOfTransp+"\" TEXT NOT NULL)";

@@ -25,9 +25,6 @@ public class SavedItinerariesActivity extends AppCompatActivity {
     private ActionBarDrawerToggle t;
     private NavigationView nv;
 
-    //TODO, al click di un monumento in lista appare un dialog
-    //con l'expanded_monument_layout'
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +44,11 @@ public class SavedItinerariesActivity extends AppCompatActivity {
         for (Itinerary itin : itinSaved){
             System.out.println("\t\tITINERARY n." + numItin);
             itin.showInfo();
+            System.out.println("HashCode: "+itin.hashCode());
             numItin++;
             System.out.print("\n\n");
         }
 
-        //TODO make a cool activity
         rv = findViewById(R.id.rv1);
         AllItinerariesAdapter adapter = new AllItinerariesAdapter(itinSaved,this, false);
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

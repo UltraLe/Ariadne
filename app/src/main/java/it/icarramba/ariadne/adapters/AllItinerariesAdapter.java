@@ -1,16 +1,20 @@
 package it.icarramba.ariadne.adapters;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import it.icarramba.ariadne.R;
+import it.icarramba.ariadne.constants.Constants;
+import it.icarramba.ariadne.control.DBManager;
 import it.icarramba.ariadne.entities.Itinerary;
 
 public class AllItinerariesAdapter extends RecyclerView.Adapter<AllItinerariesAdapter.AllItinerariesVH>{
@@ -19,7 +23,6 @@ public class AllItinerariesAdapter extends RecyclerView.Adapter<AllItinerariesAd
     private Context context;
     private boolean searched;
 
-    //TODO change in cursor adapter
     public AllItinerariesAdapter(Itinerary[] itineraries, Context context, boolean searched){
         this.itineraries = itineraries;
         this.context = context;
@@ -31,6 +34,7 @@ public class AllItinerariesAdapter extends RecyclerView.Adapter<AllItinerariesAd
         // each data item is just a string in this case
         public Button actionBtn;
         public RecyclerView rv;
+        public Itinerary viewItinerary;
 
         public AllItinerariesVH(@NonNull View itemView) {
             super(itemView);
@@ -42,12 +46,33 @@ public class AllItinerariesAdapter extends RecyclerView.Adapter<AllItinerariesAd
 
         @Override
         public void onClick(View v) {
-            //TODO when clicked change btnText in deleted and delete from db
+
             //the itin saved
-            if(v.getId() == R.id.actionBtn){
+            if(v.getId() == R.id.actionBtn &&
+                        ((Button)v).getText().toString().equals(v.getContext().getString(R.string.save)) ){
                 //save itin into db
-            }else if(v.getId() == R.id.actionBtn){
-                //delete itin from db
+                viewItinerary.setType(Constants.ItineraryType_Saved);
+                try {
+                    DBManager.getInstance(v.getContext()).insertItinerary(viewItinerary);
+                }catch(SQLException e){
+                    Toast.makeText(v.getContext(), R.string.db_exception, Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                ((Button)v).setText(R.string.saved);
+                Toast.makeText(v.getContext(), R.string.itin_saved, Toast.LENGTH_SHORT).show();
+
+            }else if(v.getId() == R.id.actionBtn &&
+                    ((Button)v).getText().toString().equals(v.getContext().getString(R.string.deleate)) ){
+
+                try {
+                    DBManager.getInstance(v.getContext()).deleteItinerary(viewItinerary);
+                }catch(SQLException e){
+                    Toast.makeText(v.getContext(), R.string.db_exception, Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                ((Button)v).setText(R.string.deleated);
+                Toast.makeText(v.getContext(), R.string.itin_deleted, Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -71,10 +96,11 @@ public class AllItinerariesAdapter extends RecyclerView.Adapter<AllItinerariesAd
     public void onBindViewHolder(@NonNull AllItinerariesVH holder, int position) {
 
         Itinerary itin = itineraries[position];
-        ItineraryAdapter itiAdapter = new ItineraryAdapter(itin);
+        ItineraryAdapter itiAdapter = new ItineraryAdapter(itin, context);
         holder.rv.setHasFixedSize(true);
         holder.rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         holder.rv.setAdapter(itiAdapter);
+        holder.viewItinerary = itin;
 
     }
 

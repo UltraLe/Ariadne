@@ -57,8 +57,10 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     //TODO fix exception is not thrown !!! :(
-    private void insertItinerary(String type, String departure, String meansOfTransp) throws SQLException{
+    private void insertItinerary(int ID, String type, String departure, String meansOfTransp) throws SQLException{
         ContentValues cv = new ContentValues();
+
+        cv.put(Constants.DBConstants.Itineraries.ID, ID);
         cv.put(Constants.DBConstants.Itineraries.Type, type);
         cv.put(Constants.DBConstants.Itineraries.Departure, departure);
         cv.put(Constants.DBConstants.Itineraries.MeansOfTransp, meansOfTransp);
@@ -110,10 +112,13 @@ public class DBManager extends SQLiteOpenHelper {
     //some of them has to be saved (the last ones and saved ones).
     public void insertItinerary(Itinerary itinerary) throws SQLException{
 
+        //TODO replace with something else
+        int itID = itinerary.hashCode();
+
         //First of all the itinerary has to be saved
-        this.insertItinerary(itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
+        this.insertItinerary(itID, itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
         //retrieve the ID (auto)assigned to the itinerary
-        int itID = getLastItineraryID();
+
 
         //Inserting all the monuments associated to the itinerary
         for (ItineraryMonument itiMon : itinerary.getItineraryMonuments()){
@@ -125,6 +130,17 @@ public class DBManager extends SQLiteOpenHelper {
         for(ItineraryMonument itiMon : itinerary.getItineraryMonuments()) {
             this.insertItineraryMonument(itID, itiMon.getMonument().getName(), itiMon.getPosition(), itiMon.getExpectedArrTime());
         }
+
+    }
+
+    //this method delete only the itinerary
+    public void deleteItinerary(Itinerary itinerary){
+
+        db.delete(Constants.DBConstants.ItineraryMonuments.TableName,
+                Constants.DBConstants.ItineraryMonuments.ItineraryID+"="+itinerary.hashCode(),null);
+
+        db.delete(Constants.DBConstants.Itineraries.TableName,
+                Constants.DBConstants.Itineraries.ID+"="+itinerary.hashCode(),null);
 
     }
 

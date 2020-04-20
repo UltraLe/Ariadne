@@ -1,6 +1,7 @@
 package it.icarramba.ariadne.adapters;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -22,9 +23,11 @@ import it.icarramba.ariadne.entities.ItineraryMonument;
 public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.SavedItinerariesViewHolder> {
 
     public Itinerary itinerary;
+    private Context context;
 
-    public ItineraryAdapter(Itinerary itinerary){
+    public ItineraryAdapter(Itinerary itinerary, Context context){
         this.itinerary = itinerary;
+        this.context = context;
     }
 
     public static class SavedItinerariesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -34,6 +37,8 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
         public TextView name;
         public TextView position;
         public TextView expectedArrTime;
+
+        //used to make easier the Dialog visualization
         public String monumDescription;
 
         public SavedItinerariesViewHolder(View v) {
@@ -78,13 +83,16 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
 
     @Override
     public void onBindViewHolder(@NonNull SavedItinerariesViewHolder holder, int position) {
+
         ItineraryMonument[] itiMon = itinerary.getItineraryMonuments();
         holder.name.setText(itiMon[position].getMonument().getName());
         holder.expectedArrTime.setText(itiMon[position].getExpectedArrTime());
         holder.position.setText(String.valueOf(itiMon[position].getPosition()));
+
         if(itiMon[position].getMonument().getDescription() == null){
-            //TODO insert somehting into R.strings
-            holder.monumDescription = "Description not found";
+
+            holder.monumDescription = context.getString(R.string.descri_not_provided);
+
         }else{
             holder.monumDescription = itiMon[position].getMonument().getDescription();
         }
@@ -96,7 +104,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
                                         0, itiMon[position].getMonument().getPicture().length);
             holder.picture.setImageBitmap(bitmap);
         }else{
-            //TODO something like image not found
+            //TODO some image like 'image not found' with a sad face :(
             holder.picture.setImageResource(R.drawable.colosseo);
         }
 

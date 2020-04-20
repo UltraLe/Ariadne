@@ -22,4 +22,9 @@
     <string name="search_drawer_str">Search new itinerary</string>
     <string name="saved_drawer_str">Saved itineraries</string>
     <string name="searched_drawer_str">Searced itineraries</string>
+    <string name="last_iti_title">Last itineraries</string>
+    <string name="descri_not_provided">Description Not Provided</string>
+    <string name="itin_saved">Itinerary Saved Correctly!</string>
+    <string name="itin_deleted">Itinerary Deleted Correctly!</string>
+
 </resources>

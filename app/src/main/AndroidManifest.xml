@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchedItinerariesActivity"></activity>
+        <activity android:name=".LastItinerariesActivity"/>
+        <activity android:name=".SearchedItinerariesActivity"/>
         <activity android:name=".PlacePickerActivity" />
         <activity android:name=".SavedItinerariesActivity" />
         <activity android:name=".RicercaActivity">
