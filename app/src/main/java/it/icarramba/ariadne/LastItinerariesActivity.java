@@ -41,15 +41,6 @@ public class LastItinerariesActivity extends AppCompatActivity {
         //getting saved itineraries form DB
         Itinerary[] itinSaved = DBManager.getInstance(this).getItineraries(Constants.ItineraryType_LastSearched);
 
-        //test if all was inserted/get correctly from DB
-        int numItin = 1;
-        for (Itinerary itin : itinSaved){
-            System.out.println("\t\tITINERARY n." + numItin);
-            itin.showInfo();
-            numItin++;
-            System.out.print("\n\n");
-        }
-
         rv = findViewById(R.id.rv1);
         AllItinerariesAdapter adapter = new AllItinerariesAdapter(itinSaved,this, true);
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

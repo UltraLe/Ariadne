@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -28,6 +31,9 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+    private ProgressBar pb;
+    private TextView serverError;
+    private ImageView imageError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,10 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         setContentView(R.layout.activity_salvati_drawer);
 
         DrawerSetUp();
+        pb = findViewById(R.id.progressBar);
+
+        serverError = findViewById(R.id.tvServerError);
+        imageError = findViewById(R.id.errorImage);
 
         ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.searched_iti_title));
 
@@ -71,6 +81,7 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
     @Override
     public void beforeCall() {
         //making visible the loading animation
+        pb.setVisibility(View.VISIBLE);
 
     }
 
@@ -78,6 +89,7 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
     public void afterCall(String response) {
 
         System.out.println("Reposnse: "+response);
+        pb.setVisibility(View.INVISIBLE);
 
         Gson gson = new Gson();
         Itinerary[] serverItins;
@@ -93,7 +105,8 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
     @Override
     public void onError() {
         //makeing invisible the loading animation
-
-        //and displaying an error message
+        serverError.setVisibility(View.VISIBLE);
+        imageError.setVisibility(View.VISIBLE);
+        pb.setVisibility(View.INVISIBLE);
     }
 }

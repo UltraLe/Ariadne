@@ -36,6 +36,8 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
 
     public void sendRequest(String lat, String lon, String time, String  transport){
 
+        cl.beforeCall();
+
         RequestQueue queue = Volley.newRequestQueue(context);
 
         String url ="http://"+this.domain+":"+Constants.Cloud.SERVER_PORT+"/?"+ Constants.Cloud.LAT+"="+lat+

@@ -26,5 +26,6 @@
     <string name="descri_not_provided">Description Not Provided</string>
     <string name="itin_saved">Itinerary Saved Correctly!</string>
     <string name="itin_deleted">Itinerary Deleted Correctly!</string>
+    <string name="server_error">There was an error with your request :(</string>
 
 </resources>
