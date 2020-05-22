@@ -5,6 +5,18 @@ public class Constants {
     public static String ItineraryType_Saved = "SAVED";
     public static String ItineraryType_LastSearched = "LAST";
 
+    //Cloud's constants
+    public static class Cloud{
+
+        public static final int SERVER_PORT = 5005;
+        public static final String SERVER_IP = "localhost";
+        public static final String LAT = "latitude";
+        public static final String LON = "longitude";
+        public static final String TRA = "trans";
+        public static final String TIME = "interval";
+    }
+
+    //Data base's constants
     public static class DBConstants {
 
         public static String DBName = "AriadneDB";

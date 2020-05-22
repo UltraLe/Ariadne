@@ -11,15 +11,18 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import it.icarramba.ariadne.adapters.AllItinerariesAdapter;
 import it.icarramba.ariadne.constants.Constants;
+import it.icarramba.ariadne.control.CloudInteractor;
+import it.icarramba.ariadne.control.CloudListener;
 import it.icarramba.ariadne.control.DBManager;
 import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.listeners.DrawerListener;
 import it.icarramba.ariadne.mockClasses.MockServerCall;
 
-public class SearchedItinerariesActivity extends AppCompatActivity {
+public class SearchedItinerariesActivity extends AppCompatActivity implements CloudListener {
 
     private RecyclerView rv;
     private DrawerLayout dl;
@@ -35,28 +38,21 @@ public class SearchedItinerariesActivity extends AppCompatActivity {
 
         ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.searched_iti_title));
 
+        CloudInteractor ci = new CloudInteractor("localhost", this, this);
         //TODO here the real server call
+        ci.sendRequest("1","2","10","bici");
+
+        /*
         //inserting mock 'last searched' itineraries
         (new MockServerCall(this)).mockServerCall(Constants.ItineraryType_LastSearched);
-        //TODO once searched save into DB as 'Last Searched'
-
         //getting saved itineraries form DB
         Itinerary[] itinSaved = DBManager.getInstance(this).getItineraries(Constants.ItineraryType_LastSearched);
-
-        //test if all was inserted/get correctly from DB
-        int numItin = 1;
-        for (Itinerary itin : itinSaved){
-            System.out.println("\t\tITINERARY n." + numItin);
-            itin.showInfo();
-            System.out.println("HashCode: "+itin.hashCode());
-            numItin++;
-            System.out.print("\n\n");
-        }
 
         rv = findViewById(R.id.rv1);
         AllItinerariesAdapter adapter = new AllItinerariesAdapter(itinSaved,this, true);
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(adapter);
+         */
     }
 
     private void DrawerSetUp() {
@@ -81,5 +77,34 @@ public class SearchedItinerariesActivity extends AppCompatActivity {
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void beforeCall() {
+        //making visible the loading animation
+
+    }
+
+    @Override
+    public void afterCall(String response) {
+
+        System.out.println("Reposnse: "+response);
+
+        Gson gson = new Gson();
+        Itinerary[] serverItins;
+        serverItins = gson.fromJson(response, Itinerary[].class);
+        //TODO once searched save into DB as 'Last Searched', and check if inserted new
+
+        rv = findViewById(R.id.rv1);
+        AllItinerariesAdapter adapter = new AllItinerariesAdapter(serverItins,this, true);
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rv.setAdapter(adapter);
+    }
+
+    @Override
+    public void onError() {
+        //makeing invisible the loading animation
+
+        //and displaying an error message
     }
 }
