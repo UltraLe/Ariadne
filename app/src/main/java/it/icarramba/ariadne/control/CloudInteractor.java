@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import it.icarramba.ariadne.constants.Constants;
+import it.icarramba.ariadne.listeners.CloudListener;
 
 public class CloudInteractor implements Response.ErrorListener, Response.Listener<String> {
 

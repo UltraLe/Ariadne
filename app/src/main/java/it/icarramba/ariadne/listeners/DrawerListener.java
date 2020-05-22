@@ -8,6 +8,8 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+
+import it.icarramba.ariadne.LastItinerariesActivity;
 import it.icarramba.ariadne.R;
 import it.icarramba.ariadne.RicercaActivity;
 import it.icarramba.ariadne.SavedItinerariesActivity;
@@ -34,6 +36,9 @@ public class DrawerListener implements NavigationView.OnNavigationItemSelectedLi
                 break;
             case R.id.mycart:
                 context.startActivity(new Intent(context, SearchedItinerariesActivity.class));
+                break;
+            case R.id.lasts:
+                context.startActivity(new Intent(context, LastItinerariesActivity.class));
                 break;
             default:
                 return true;

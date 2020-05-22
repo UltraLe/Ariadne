@@ -1,4 +1,4 @@
-package it.icarramba.ariadne.control;
+package it.icarramba.ariadne.listeners;
 
 public interface CloudListener {
 

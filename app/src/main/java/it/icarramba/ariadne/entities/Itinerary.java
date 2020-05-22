@@ -15,13 +15,6 @@ public class Itinerary {
         this.Departure = departure;
         this.MeansOfTransp = meansOfTransp;
         this.ItineraryMonuments = itinMon;
-
-        setID();
-    }
-
-    private void setID(){
-        //TODO edit here if needed
-        //this.ID = this.hashCode();
     }
 
     public String getDeparture() {

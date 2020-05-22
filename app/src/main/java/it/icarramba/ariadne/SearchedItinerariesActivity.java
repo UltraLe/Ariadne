@@ -17,13 +17,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
 import it.icarramba.ariadne.adapters.AllItinerariesAdapter;
-import it.icarramba.ariadne.constants.Constants;
 import it.icarramba.ariadne.control.CloudInteractor;
-import it.icarramba.ariadne.control.CloudListener;
-import it.icarramba.ariadne.control.DBManager;
+import it.icarramba.ariadne.listeners.CloudListener;
 import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.listeners.DrawerListener;
-import it.icarramba.ariadne.mockClasses.MockServerCall;
 
 public class SearchedItinerariesActivity extends AppCompatActivity implements CloudListener {
 

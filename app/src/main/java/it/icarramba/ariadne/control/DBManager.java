@@ -112,7 +112,7 @@ public class DBManager extends SQLiteOpenHelper {
     //some of them has to be saved (the last ones and saved ones).
     public void insertItinerary(Itinerary itinerary) throws SQLException{
 
-        //TODO replace with something else
+        //TODO replace with something else, make the server create the ID
         int itID = itinerary.hashCode();
 
         //First of all the itinerary has to be saved
