@@ -38,21 +38,10 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
         ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.searched_iti_title));
 
-        CloudInteractor ci = new CloudInteractor("localhost", this, this);
-        //TODO here the real server call
+        CloudInteractor ci = new CloudInteractor("160.80.131.74", this, this);
+
+        //TODO here the real Server call
         ci.sendRequest("1","2","10","bici");
-
-        /*
-        //inserting mock 'last searched' itineraries
-        (new MockServerCall(this)).mockServerCall(Constants.ItineraryType_LastSearched);
-        //getting saved itineraries form DB
-        Itinerary[] itinSaved = DBManager.getInstance(this).getItineraries(Constants.ItineraryType_LastSearched);
-
-        rv = findViewById(R.id.rv1);
-        AllItinerariesAdapter adapter = new AllItinerariesAdapter(itinSaved,this, true);
-        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(adapter);
-         */
     }
 
     private void DrawerSetUp() {
