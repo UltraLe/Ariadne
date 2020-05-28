@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
 import it.icarramba.ariadne.adapters.AllItinerariesAdapter;
 import it.icarramba.ariadne.control.CloudInteractor;
 import it.icarramba.ariadne.listeners.CloudListener;
@@ -45,10 +47,11 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
         ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.searched_iti_title));
 
-        CloudInteractor ci = new CloudInteractor("160.80.131.74", this, this);
+        CloudInteractor ci = new CloudInteractor("192.168.1.85", this, this);
 
-        //TODO here the real Server call
-        ci.sendRequest("1","2","10","bici");
+        ArrayList<String> info = getIntent().getExtras().getStringArrayList("info");
+        //System.out.println(info.get(0) + " "+ info.get(1)+" "+ info.get(2)+" "+ info.get(3));
+        ci.sendRequest(info.get(0),info.get(1),info.get(2),info.get(3));
     }
 
     private void DrawerSetUp() {

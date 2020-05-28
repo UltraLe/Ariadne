@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import it.icarramba.ariadne.constants.Constants;
+import it.icarramba.ariadne.control.CloudInteractor;
 import it.icarramba.ariadne.enums.Trasport;
+import it.icarramba.ariadne.listeners.CloudListener;
 import it.icarramba.ariadne.listeners.DrawerListener;
 import it.icarramba.ariadne.mockClasses.MockServerCall;
 
@@ -43,7 +46,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
-public class RicercaActivity extends AppCompatActivity implements TextView.OnEditorActionListener,OnSuccessListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+import java.util.ArrayList;
+
+public class RicercaActivity extends AppCompatActivity implements TextView.OnEditorActionListener,OnSuccessListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener{
 
 
     private static final int PERMISSIONS_REQUEST_RESULT = 1;
@@ -183,20 +188,17 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
             //in minutes
             String[] splitted = timeString.split(":");
             int chosenIntervall = Integer.parseInt(splitted[0])*60+Integer.parseInt(splitted[1]);
-            String json_res;
-            try {
-                json_res = new MockServerCall(this).sendReqeust(currLocation, chosenIntervall, currChoice);
-            } catch (Exception e) {
-                Toast.makeText(this, getString(R.string.no_transport_str), Toast.LENGTH_LONG).show();
-                return;
-            }
-            //Toast.makeText(this, String.valueOf(currLocation.latitude) + String.valueOf(currLocation.longitude) + String.valueOf(chosenIntervall) + currChoice.toString(), Toast.LENGTH_LONG).show();
 
-            Bundle toPass = new Bundle();
-            toPass.putString("Itineraries", json_res);
-            //Start Itineraries activity
-            //Toast.makeText(this, currChoice.toString(), Toast.LENGTH_LONG).show();
+            //Send info to other activity
+            ArrayList<String> lista = new ArrayList<>();
+            lista.add(String.valueOf(currLocation.latitude));
+            lista.add(String.valueOf(currLocation.longitude));
+            lista.add(String.valueOf(chosenIntervall));
+            lista.add(currChoice.toString());
 
+            Intent i = new Intent(this, SearchedItinerariesActivity.class);
+            i.putExtra("info", lista);
+            startActivity(i);
         }
 
     }
