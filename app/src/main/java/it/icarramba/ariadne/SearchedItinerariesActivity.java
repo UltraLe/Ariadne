@@ -26,6 +26,7 @@ import it.icarramba.ariadne.listeners.CloudListener;
 import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.listeners.DrawerListener;
 
+//TODO aggiusta il db
 public class SearchedItinerariesActivity extends AppCompatActivity implements CloudListener {
 
     private RecyclerView rv;
