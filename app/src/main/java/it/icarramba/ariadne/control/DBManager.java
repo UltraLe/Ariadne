@@ -9,6 +9,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
+
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -57,7 +63,7 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     //TODO fix exception is not thrown !!! :(
-    private void insertItinerary(int ID, String type, String departure, String meansOfTransp) throws SQLException{
+    private void insertItinerary(String ID, String type, String departure, String meansOfTransp) throws SQLException{
         ContentValues cv = new ContentValues();
 
         cv.put(Constants.DBConstants.Itineraries.ID, ID);
@@ -78,7 +84,7 @@ public class DBManager extends SQLiteOpenHelper {
         db.insert(Constants.DBConstants.Monuments.TableName, null, cv);
     }
 
-    private void insertItineraryMonument(int itinId, String monumName, int position, String expArrTime) throws SQLException{
+    private void insertItineraryMonument(String itinId, String monumName, int position, String expArrTime) throws SQLException{
         ContentValues cv = new ContentValues();
         cv.put(Constants.DBConstants.ItineraryMonuments.ItineraryID, itinId);
         cv.put(Constants.DBConstants.ItineraryMonuments.MonumentName, monumName);
@@ -110,13 +116,24 @@ public class DBManager extends SQLiteOpenHelper {
 
     //The server into the cloud will return a list of itinerary,
     //some of them has to be saved (the last ones and saved ones).
-    public void insertItinerary(Itinerary itinerary) throws SQLException{
+    public void insertItinerary(Itinerary itinerary) throws SQLException {
 
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        String text = (new Gson()).toJson(itinerary);
+        md.update(text.getBytes(StandardCharsets.UTF_8));
+        byte[] digest = md.digest();
+        String hex = String.format("%064x", new BigInteger(1, digest));
+        System.out.println(hex);
         //TODO replace with something else, make the server create the ID
-        int itID = itinerary.hashCode();
+        //int itID = itinerary.hashCode();
 
         //First of all the itinerary has to be saved
-        this.insertItinerary(itID, itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
+        this.insertItinerary(hex, itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
         //retrieve the ID (auto)assigned to the itinerary
 
 
@@ -128,7 +145,7 @@ public class DBManager extends SQLiteOpenHelper {
 
         //Inserting now the itineraryMonuments
         for(ItineraryMonument itiMon : itinerary.getItineraryMonuments()) {
-            this.insertItineraryMonument(itID, itiMon.getMonument().getName(), itiMon.getPosition(), itiMon.getExpectedArrTime());
+            this.insertItineraryMonument(hex, itiMon.getMonument().getName(), itiMon.getPosition(), itiMon.getExpectedArrTime());
         }
 
     }
@@ -137,10 +154,10 @@ public class DBManager extends SQLiteOpenHelper {
     public void deleteItinerary(Itinerary itinerary){
 
         db.delete(Constants.DBConstants.ItineraryMonuments.TableName,
-                Constants.DBConstants.ItineraryMonuments.ItineraryID+"="+itinerary.hashCode(),null);
+                Constants.DBConstants.ItineraryMonuments.ItineraryID+"="+itinerary.getID(),null);
 
         db.delete(Constants.DBConstants.Itineraries.TableName,
-                Constants.DBConstants.Itineraries.ID+"="+itinerary.hashCode(),null);
+                Constants.DBConstants.Itineraries.ID+"="+itinerary.getID(),null);
 
     }
 
@@ -234,7 +251,7 @@ public class DBManager extends SQLiteOpenHelper {
                 itinMonFound = Arrays.copyOf(itineraryMonuments.toArray(), itineraryMonuments.toArray().length, ItineraryMonument[].class);
             }
             //Adding the itinerary
-            tempItin = new Itinerary(cursor.getInt(0), cursor.getString(1),
+            tempItin = new Itinerary(cursor.getString(0), cursor.getString(1),
                                     cursor.getString(2), cursor.getString(3),
                                     itinMonFound);
             itineraries.add(tempItin);

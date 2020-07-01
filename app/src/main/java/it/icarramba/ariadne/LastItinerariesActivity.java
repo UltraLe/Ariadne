@@ -36,7 +36,7 @@ public class LastItinerariesActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.last_iti_title));
 
         //inserting mock 'saved' itineraries
-        (new MockServerCall(this)).mockServerCall(Constants.ItineraryType_LastSearched);
+        //(new MockServerCall(this)).mockServerCall(Constants.ItineraryType_LastSearched);
 
         //getting saved itineraries form DB
         Itinerary[] itinSaved = DBManager.getInstance(this).getItineraries(Constants.ItineraryType_LastSearched);

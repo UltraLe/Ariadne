@@ -19,7 +19,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import it.icarramba.ariadne.adapters.AllItinerariesAdapter;
+import it.icarramba.ariadne.constants.Constants;
 import it.icarramba.ariadne.control.CloudInteractor;
+import it.icarramba.ariadne.control.DBManager;
 import it.icarramba.ariadne.listeners.CloudListener;
 import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.listeners.DrawerListener;
@@ -94,7 +96,11 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         Gson gson = new Gson();
         Itinerary[] serverItins;
         serverItins = gson.fromJson(response, Itinerary[].class);
-        //TODO once searched save into DB as 'Last Searched', and check if inserted new
+
+        for(Itinerary itin : serverItins) {
+            itin.setType(Constants.ItineraryType_LastSearched);
+            DBManager.getInstance(this).insertItinerary(itin);
+        }
 
         rv = findViewById(R.id.rv1);
         AllItinerariesAdapter adapter = new AllItinerariesAdapter(serverItins,this, true);
