@@ -3,7 +3,7 @@ package it.icarramba.ariadne.listeners;
 public interface CloudListener {
 
     //method that has to set up the activity, if needed,
-    //for example makeing visible loagind animation
+    //for example making visible loading animation
     void beforeCall();
 
     //method that has to implement

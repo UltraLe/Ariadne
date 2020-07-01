@@ -34,20 +34,10 @@ public class SavedItinerariesActivity extends AppCompatActivity {
         DrawerSetUp();
 
         //inserting mock 'saved' itineraries
-        (new MockServerCall(this)).mockServerCall(Constants.ItineraryType_Saved);
+        //(new MockServerCall(this)).mockServerCall(Constants.ItineraryType_Saved);
 
         //getting saved itineraries form DB
         Itinerary[] itinSaved = DBManager.getInstance(this).getItineraries(Constants.ItineraryType_Saved);
-
-        //test if all was inserted/get correctly from DB
-        int numItin = 1;
-        for (Itinerary itin : itinSaved){
-            System.out.println("\t\tITINERARY n." + numItin);
-            itin.showInfo();
-            System.out.println("HashCode: "+itin.hashCode());
-            numItin++;
-            System.out.print("\n\n");
-        }
 
         rv = findViewById(R.id.rv1);
         AllItinerariesAdapter adapter = new AllItinerariesAdapter(itinSaved,this, false);

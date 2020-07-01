@@ -2,13 +2,13 @@ package it.icarramba.ariadne.entities;
 
 public class Itinerary {
 
-    private int ID;
+    private String ID;
     private String Type;
     private String Departure;
     private String MeansOfTransp;
     private ItineraryMonument[] ItineraryMonuments;
 
-    public Itinerary(int id, String type, String departure,
+    public Itinerary(String id, String type, String departure,
                      String meansOfTransp, ItineraryMonument[] itinMon){
         this.ID = id;
         this.Type = type;
@@ -21,7 +21,7 @@ public class Itinerary {
         return Departure;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 

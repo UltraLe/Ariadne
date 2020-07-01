@@ -19,7 +19,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import it.icarramba.ariadne.adapters.AllItinerariesAdapter;
+import it.icarramba.ariadne.constants.Constants;
 import it.icarramba.ariadne.control.CloudInteractor;
+import it.icarramba.ariadne.control.DBManager;
 import it.icarramba.ariadne.listeners.CloudListener;
 import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.listeners.DrawerListener;
@@ -47,11 +49,11 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
         ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.searched_iti_title));
 
-        CloudInteractor ci = new CloudInteractor("192.168.1.85", this, this);
+        CloudInteractor ci = new CloudInteractor("160.80.131.74", this, this);
 
-        ArrayList<String> info = getIntent().getExtras().getStringArrayList("info");
+        //ArrayList<String> info = getIntent().getExtras().getStringArrayList("info");
         //System.out.println(info.get(0) + " "+ info.get(1)+" "+ info.get(2)+" "+ info.get(3));
-        ci.sendRequest(info.get(0),info.get(1),info.get(2),info.get(3));
+        ci.sendRequest("1","2","10","bici");
     }
 
     private void DrawerSetUp() {
@@ -94,7 +96,11 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         Gson gson = new Gson();
         Itinerary[] serverItins;
         serverItins = gson.fromJson(response, Itinerary[].class);
-        //TODO once searched save into DB as 'Last Searched', and check if inserted new
+
+        for(Itinerary itin : serverItins) {
+            itin.setType(Constants.ItineraryType_LastSearched);
+            DBManager.getInstance(this).insertItinerary(itin);
+        }
 
         rv = findViewById(R.id.rv1);
         AllItinerariesAdapter adapter = new AllItinerariesAdapter(serverItins,this, true);
