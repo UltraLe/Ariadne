@@ -91,7 +91,7 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
             //Sono stati concessi avvio la ricerca dell'ultima locazione
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-             if (lat == 0)
+            if (lat == 0)
                 startSearchLocation();
         } else {
             //Chedo i permessi se non mi sono stati dati
