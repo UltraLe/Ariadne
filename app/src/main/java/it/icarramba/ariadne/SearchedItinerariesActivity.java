@@ -52,6 +52,8 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
         CloudInteractor ci = new CloudInteractor("160.80.131.74", this, this);
 
+        //TODO if this activity is not selected starting by RicercaActivity,
+        // a null pointer exception is raised
         //ArrayList<String> info = getIntent().getExtras().getStringArrayList("info");
         //System.out.println(info.get(0) + " "+ info.get(1)+" "+ info.get(2)+" "+ info.get(3));
         ci.sendRequest("1","2","10","bici");
@@ -99,6 +101,7 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         serverItins = gson.fromJson(response, Itinerary[].class);
 
         for(Itinerary itin : serverItins) {
+            itin.showInfo();
             itin.setType(Constants.ItineraryType_LastSearched);
             DBManager.getInstance(this).insertItinerary(itin);
         }
@@ -111,7 +114,7 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
     @Override
     public void onError() {
-        //makeing invisible the loading animation
+        //making invisible the loading animation
         serverError.setVisibility(View.VISIBLE);
         imageError.setVisibility(View.VISIBLE);
         pb.setVisibility(View.INVISIBLE);

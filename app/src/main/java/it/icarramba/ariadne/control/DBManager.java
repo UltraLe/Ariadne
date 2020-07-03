@@ -62,7 +62,6 @@ public class DBManager extends SQLiteOpenHelper {
         }
     }
 
-    //TODO fix exception is not thrown !!! :(
     private void insertItinerary(String ID, String type, String departure, String meansOfTransp) throws SQLException{
         ContentValues cv = new ContentValues();
 
@@ -118,22 +117,8 @@ public class DBManager extends SQLiteOpenHelper {
     //some of them has to be saved (the last ones and saved ones).
     public void insertItinerary(Itinerary itinerary) throws SQLException {
 
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        String text = (new Gson()).toJson(itinerary);
-        md.update(text.getBytes(StandardCharsets.UTF_8));
-        byte[] digest = md.digest();
-        String hex = String.format("%064x", new BigInteger(1, digest));
-        System.out.println(hex);
-        //TODO replace with something else, make the server create the ID
-        //int itID = itinerary.hashCode();
-
         //First of all the itinerary has to be saved
-        this.insertItinerary(hex, itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
+        this.insertItinerary(itinerary.getID(), itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
         //retrieve the ID (auto)assigned to the itinerary
 
 
@@ -145,7 +130,7 @@ public class DBManager extends SQLiteOpenHelper {
 
         //Inserting now the itineraryMonuments
         for(ItineraryMonument itiMon : itinerary.getItineraryMonuments()) {
-            this.insertItineraryMonument(hex, itiMon.getMonument().getName(), itiMon.getPosition(), itiMon.getExpectedArrTime());
+            this.insertItineraryMonument(itinerary.getID(), itiMon.getMonument().getName(), itiMon.getPosition(), itiMon.getExpectedArrTime());
         }
 
     }
@@ -166,7 +151,8 @@ public class DBManager extends SQLiteOpenHelper {
 
         if (!(cursor.moveToFirst()) || cursor.getCount() == 0){
             cursor.close();
-            System.out.println("Query has procuced nothing !");
+            System.out.println("Query has produced nothing !");
+            return;
         }
         int numCol = cursor.getColumnCount();
         for(int i = 0; i < numCol; ++i) {
@@ -202,13 +188,13 @@ public class DBManager extends SQLiteOpenHelper {
 
         String query = "select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, M.Picture, M.Coordinates, M.Description " +
                         "from " +Constants.DBConstants.Itineraries.TableName+" I join "
-                                +Constants.DBConstants.ItineraryMonuments.TableName+" IM on I.ID join "
-                                +Constants.DBConstants.Monuments.TableName+" M " +
-                         "where IM.ItineraryID == I.ID and I.Type == '"+type+"' and IM.MonumentName == M.Name "+
+                                +Constants.DBConstants.ItineraryMonuments.TableName+" IM on I.ID = IM."+Constants.DBConstants.ItineraryMonuments.ItineraryID+" join "
+                                +Constants.DBConstants.Monuments.TableName+" M on IM.MonumentName = M."+Constants.DBConstants.Monuments.Name+"; "+
+                         "where I.Type == '"+type+"' "+
                          "ORDER BY I."+Constants.DBConstants.Itineraries.ID+", IM."+Constants.DBConstants.ItineraryMonuments.Position+";";
 
         Cursor cursor = db.rawQuery(query, null);
-        //printQuery(cursor);
+        printQuery(cursor);
         if (!(cursor.moveToFirst()) || cursor.getCount() == 0){
             cursor.close();
             return null;
@@ -219,7 +205,7 @@ public class DBManager extends SQLiteOpenHelper {
         Vector<ItineraryMonument> itineraryMonuments = new Vector<>();
 
         do{
-            int currentItineraryID = cursor.getInt(0);
+            String currentItineraryID = cursor.getString(0);
 
             //For each itinerary, find the monument associated and populate 'itineraryMonuments'
             while(true){
@@ -238,7 +224,7 @@ public class DBManager extends SQLiteOpenHelper {
                 }
                 //if the new itinerary id is different from the last one
                 //i have to break this cycle and move back the cursor
-                if(cursor.getInt(0) != currentItineraryID){
+                if(!cursor.getString(0).equals(currentItineraryID)){
                     cursor.moveToPrevious();
                     break;
                 }
@@ -264,18 +250,6 @@ public class DBManager extends SQLiteOpenHelper {
         }else{
             return Arrays.copyOf(itineraries.toArray(), itineraries.toArray().length, Itinerary[].class);
         }
-    }
-
-    //retrieve the ID (auto)assigned of the last inserted itinerary
-    private int getLastItineraryID() throws SQLException{
-        String query = "SELECT "+ Constants.DBConstants.Itineraries.ID +
-                        " FROM "+ Constants.DBConstants.Itineraries.TableName
-                        + " ORDER BY "+Constants.DBConstants.Itineraries.ID+" DESC LIMIT 1";
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        int lastID = cursor.getInt(0);
-        cursor.close();
-        return lastID;
     }
 
     public boolean shouldRaiseDBException(String str){

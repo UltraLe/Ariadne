@@ -46,6 +46,9 @@ public class Itinerary {
     }
 
     public void showInfo(){
+        System.out.println("ID: "+this.getID());
+        System.out.println("Means: "+this.getMeansOfTransp());
+        System.out.println("Dep: "+this.getDeparture());
         for (ItineraryMonument itiMon : ItineraryMonuments){
             System.out.println("Position: "+itiMon.getPosition());
             System.out.println("Monument Name: "+itiMon.getMonument().getName());

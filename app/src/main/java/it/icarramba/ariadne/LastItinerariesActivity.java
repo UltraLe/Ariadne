@@ -39,10 +39,12 @@ public class LastItinerariesActivity extends AppCompatActivity {
         //(new MockServerCall(this)).mockServerCall(Constants.ItineraryType_LastSearched);
 
         //getting saved itineraries form DB
-        Itinerary[] itinSaved = DBManager.getInstance(this).getItineraries(Constants.ItineraryType_LastSearched);
+        Itinerary[] itinLast = DBManager.getInstance(this).getItineraries(Constants.ItineraryType_LastSearched);
+
+        System.out.println("Num LAST FOUND: "+itinLast.length);
 
         rv = findViewById(R.id.rv1);
-        AllItinerariesAdapter adapter = new AllItinerariesAdapter(itinSaved,this, true);
+        AllItinerariesAdapter adapter = new AllItinerariesAdapter(itinLast,this, true);
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(adapter);
     }
