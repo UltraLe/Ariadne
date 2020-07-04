@@ -53,7 +53,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
 
         @Override
         public void onClick(View v) {
-            //when a monument is clicked, diplay a dialog with the monument_layout
+            //when a monument is clicked, display a dialog with the monument_layout
             AlertDialog dialog;
 
             View monumentDialogView = LayoutInflater.from(v.getContext()).inflate
@@ -64,8 +64,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
                     .setCancelable(true).create();
 
             ((TextView)monumentDialogView.findViewById(R.id.expMonTitle)).setText(((TextView)v.findViewById(R.id.expMonTitle)).getText());
-            //TODO fix
-            ((ImageView)monumentDialogView.findViewById(R.id.monImageItin)).setImageMatrix(((ImageView)v.findViewById(R.id.monImageItin)).getImageMatrix());
+            ((ImageView)monumentDialogView.findViewById(R.id.monImageItin)).setImageBitmap(((ImageView)v.findViewById(R.id.monImageItin)).getDrawingCache());
             ((TextView)monumentDialogView.findViewById(R.id.monumDescription)).setText(monumDescription);
 
             dialog.show();
@@ -103,9 +102,16 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
             Bitmap bitmap = BitmapFactory.decodeByteArray(itiMon[position].getMonument().getPicture(),
                                         0, itiMon[position].getMonument().getPicture().length);
             holder.picture.setImageBitmap(bitmap);
+            //this is needed in order to cache the image and retrieve it for the expanded dialog
+            holder.picture.setDrawingCacheEnabled(true);
+
         }else{
             //TODO some image like 'image not found' with a sad face :(
-            holder.picture.setImageResource(R.drawable.colosseo);
+
+            Bitmap tempImage = BitmapFactory.decodeResource(context.getResources(),R.drawable.colosseo);
+            holder.picture.setImageBitmap(tempImage);
+            //this is needed in order to cache the image and retrieve it for the expanded dialog
+            holder.picture.setDrawingCacheEnabled(true);
         }
 
     }
