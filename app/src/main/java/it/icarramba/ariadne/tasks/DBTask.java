@@ -34,9 +34,7 @@ public class DBTask extends AsyncTask<DBQueryBean, Void, Void> {
                try {
                    dbManager.insertItinerary(itinerary);
                }catch (SQLException e){
-                   if(DBManager.getInstance(reference.get()).shouldRaiseDBException(e.getMessage())){
-                       Toast.makeText(reference.get(), R.string.db_exception, Toast.LENGTH_SHORT).show();
-                   }
+                   Toast.makeText(reference.get(), R.string.db_exception, Toast.LENGTH_SHORT).show();
                }
            }
 
@@ -48,9 +46,7 @@ public class DBTask extends AsyncTask<DBQueryBean, Void, Void> {
            try {
                itinerariesFound = dbManager.getItineraries(itinType);
            }catch(SQLException e){
-               if(DBManager.getInstance(reference.get()).shouldRaiseDBException(e.getMessage())){
-                   Toast.makeText(reference.get(), R.string.db_exception, Toast.LENGTH_SHORT).show();
-               }
+               Toast.makeText(reference.get(), R.string.db_exception, Toast.LENGTH_SHORT).show();
            }
            dbQueries[0].setItineraries(itinerariesFound);
 

@@ -4,17 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
-
-import com.google.gson.Gson;
-
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -70,7 +64,7 @@ public class DBManager extends SQLiteOpenHelper {
         cv.put(Constants.DBConstants.Itineraries.Departure, departure);
         cv.put(Constants.DBConstants.Itineraries.MeansOfTransp, meansOfTransp);
 
-        db.insert(Constants.DBConstants.Itineraries.TableName, null, cv);
+        db.insertOrThrow(Constants.DBConstants.Itineraries.TableName, null, cv);
     }
 
     private void insertMonument(String name, byte[] picture, String coordinates, String description) throws SQLException{
@@ -80,7 +74,7 @@ public class DBManager extends SQLiteOpenHelper {
         cv.put(Constants.DBConstants.Monuments.Coordinates, coordinates);
         cv.put(Constants.DBConstants.Monuments.Description, description);
 
-        db.insert(Constants.DBConstants.Monuments.TableName, null, cv);
+        db.insertOrThrow(Constants.DBConstants.Monuments.TableName, null, cv);
     }
 
     private void insertItineraryMonument(String itinId, String monumName, int position, String expArrTime) throws SQLException{
@@ -90,7 +84,7 @@ public class DBManager extends SQLiteOpenHelper {
         cv.put(Constants.DBConstants.ItineraryMonuments.Position, position);
         cv.put(Constants.DBConstants.ItineraryMonuments.ExpectedArrTime, expArrTime);
 
-        db.insert(Constants.DBConstants.ItineraryMonuments.TableName, null, cv);
+        db.insertOrThrow(Constants.DBConstants.ItineraryMonuments.TableName, null, cv);
     }
 
     //stupid method that checks if any itinerary of a selected type
@@ -113,24 +107,40 @@ public class DBManager extends SQLiteOpenHelper {
         return true;
     }
 
+
+    public void updateItineraryType(String type, String itinID){
+        String query = "UPDATE "+Constants.DBConstants.Itineraries.TableName+" SET "+
+                Constants.DBConstants.Itineraries.Type+" = '"+type+"' WHERE "+
+                Constants.DBConstants.Itineraries.ID+" = '"+ itinID+"';";
+
+        db.execSQL(query);
+    }
+
     //The server into the cloud will return a list of itinerary,
     //some of them has to be saved (the last ones and saved ones).
     public void insertItinerary(Itinerary itinerary) throws SQLException {
 
-        //First of all the itinerary has to be saved
-        this.insertItinerary(itinerary.getID(), itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
-        //retrieve the ID (auto)assigned to the itinerary
+        try {
+
+            //First of all the itinerary has to be saved
+            this.insertItinerary(itinerary.getID(), itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
+            //retrieve the ID (auto)assigned to the itinerary
 
 
-        //Inserting all the monuments associated to the itinerary
-        for (ItineraryMonument itiMon : itinerary.getItineraryMonuments()){
-            this.insertMonument(itiMon.getMonument().getName(), itiMon.getMonument().getPicture(),
-                                itiMon.getMonument().getCoordinates(), itiMon.getMonument().getDescription());
-        }
+            //Inserting all the monuments associated to the itinerary
+            for (ItineraryMonument itiMon : itinerary.getItineraryMonuments()) {
+                this.insertMonument(itiMon.getMonument().getName(), itiMon.getMonument().getPicture(),
+                        itiMon.getMonument().getCoordinates(), itiMon.getMonument().getDescription());
+            }
 
-        //Inserting now the itineraryMonuments
-        for(ItineraryMonument itiMon : itinerary.getItineraryMonuments()) {
-            this.insertItineraryMonument(itinerary.getID(), itiMon.getMonument().getName(), itiMon.getPosition(), itiMon.getExpectedArrTime());
+            //Inserting now the itineraryMonuments
+            for (ItineraryMonument itiMon : itinerary.getItineraryMonuments()) {
+                this.insertItineraryMonument(itinerary.getID(), itiMon.getMonument().getName(), itiMon.getPosition(), itiMon.getExpectedArrTime());
+            }
+        }catch (SQLiteConstraintException s){
+            //ignore
+        }catch (SQLException e){
+            throw e;
         }
 
     }
@@ -139,10 +149,10 @@ public class DBManager extends SQLiteOpenHelper {
     public void deleteItinerary(Itinerary itinerary){
 
         db.delete(Constants.DBConstants.ItineraryMonuments.TableName,
-                Constants.DBConstants.ItineraryMonuments.ItineraryID+"="+itinerary.getID(),null);
+                Constants.DBConstants.ItineraryMonuments.ItineraryID+"='"+itinerary.getID()+"'",null);
 
         db.delete(Constants.DBConstants.Itineraries.TableName,
-                Constants.DBConstants.Itineraries.ID+"="+itinerary.getID(),null);
+                Constants.DBConstants.Itineraries.ID+"='"+itinerary.getID()+"'",null);
 
     }
 
@@ -189,12 +199,12 @@ public class DBManager extends SQLiteOpenHelper {
         String query = "select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, M.Picture, M.Coordinates, M.Description " +
                         "from " +Constants.DBConstants.Itineraries.TableName+" I join "
                                 +Constants.DBConstants.ItineraryMonuments.TableName+" IM on I.ID = IM."+Constants.DBConstants.ItineraryMonuments.ItineraryID+" join "
-                                +Constants.DBConstants.Monuments.TableName+" M on IM.MonumentName = M."+Constants.DBConstants.Monuments.Name+"; "+
-                         "where I.Type == '"+type+"' "+
+                                +Constants.DBConstants.Monuments.TableName+" M on IM.MonumentName = M."+Constants.DBConstants.Monuments.Name+
+                         " where I.Type = '"+type+"' "+
                          "ORDER BY I."+Constants.DBConstants.Itineraries.ID+", IM."+Constants.DBConstants.ItineraryMonuments.Position+";";
 
         Cursor cursor = db.rawQuery(query, null);
-        printQuery(cursor);
+        //printQuery(cursor);
         if (!(cursor.moveToFirst()) || cursor.getCount() == 0){
             cursor.close();
             return null;
@@ -252,17 +262,18 @@ public class DBManager extends SQLiteOpenHelper {
         }
     }
 
-    public boolean shouldRaiseDBException(String str){
+    private void shouldRaiseDBException(String str) throws SQLException{
 
-        boolean raiseException = true;
+        boolean thr = true;
         for(String e : Constants.DBConstants.ignoreDBExceptions){
             if(str.contains(e)){
-                raiseException = false;
+                thr = false;
                 break;
             }
         }
-
-        return  raiseException;
+        if(thr){
+            throw new SQLException(str);
+        }
     }
 
 

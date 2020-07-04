@@ -53,7 +53,8 @@ public class AllItinerariesAdapter extends RecyclerView.Adapter<AllItinerariesAd
                 //save itin into db
                 viewItinerary.setType(Constants.ItineraryType_Saved);
                 try {
-                    DBManager.getInstance(v.getContext()).insertItinerary(viewItinerary);
+                    DBManager.getInstance(v.getContext()).updateItineraryType(
+                                            Constants.ItineraryType_Saved, viewItinerary.getID());
                 }catch(SQLException e){
                     Toast.makeText(v.getContext(), R.string.db_exception, Toast.LENGTH_SHORT).show();
                     e.printStackTrace();

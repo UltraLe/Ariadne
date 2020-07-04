@@ -16,7 +16,6 @@ import it.icarramba.ariadne.constants.Constants;
 import it.icarramba.ariadne.control.DBManager;
 import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.listeners.DrawerListener;
-import it.icarramba.ariadne.mockClasses.MockServerCall;
 
 public class SavedItinerariesActivity extends AppCompatActivity {
 

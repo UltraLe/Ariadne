@@ -26,7 +26,6 @@ import it.icarramba.ariadne.listeners.CloudListener;
 import it.icarramba.ariadne.entities.Itinerary;
 import it.icarramba.ariadne.listeners.DrawerListener;
 
-//TODO aggiusta il db
 public class SearchedItinerariesActivity extends AppCompatActivity implements CloudListener {
 
     private RecyclerView rv;
@@ -101,7 +100,6 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         serverItins = gson.fromJson(response, Itinerary[].class);
 
         for(Itinerary itin : serverItins) {
-            itin.showInfo();
             itin.setType(Constants.ItineraryType_LastSearched);
             DBManager.getInstance(this).insertItinerary(itin);
         }

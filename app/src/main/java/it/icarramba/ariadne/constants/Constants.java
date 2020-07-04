@@ -22,7 +22,7 @@ public class Constants {
         public static String DBName = "AriadneDB";
         public static int DBVersion = 1;
 
-        public static String[] ignoreDBExceptions = {"already exists", "constraint"};
+        public static String[] ignoreDBExceptions = {"already exists", "constraint", "UNIQUE"};
 
         public static class Itineraries{
 
