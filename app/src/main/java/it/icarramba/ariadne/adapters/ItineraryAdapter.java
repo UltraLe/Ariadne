@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,9 +99,10 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
 
 
         //if the monument has an image
-        if(itiMon[position].getMonument().getPicture().length > 0){
-            Bitmap bitmap = BitmapFactory.decodeByteArray(itiMon[position].getMonument().getPicture(),
-                                        0, itiMon[position].getMonument().getPicture().length);
+        if(itiMon[position].getMonument().getPicture().length() > 0){
+            byte[] decodedImage = Base64.decode(itiMon[position].getMonument().getPicture(), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedImage,
+                                        0, decodedImage.length);
             holder.picture.setImageBitmap(bitmap);
             //this is needed in order to cache the image and retrieve it for the expanded dialog
             holder.picture.setDrawingCacheEnabled(true);
@@ -108,7 +110,7 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.Save
         }else{
             //TODO some image like 'image not found' with a sad face :(
 
-            Bitmap tempImage = BitmapFactory.decodeResource(context.getResources(),R.drawable.colosseo);
+            Bitmap tempImage = BitmapFactory.decodeResource(context.getResources(),R.drawable.saddog);
             holder.picture.setImageBitmap(tempImage);
             //this is needed in order to cache the image and retrieve it for the expanded dialog
             holder.picture.setDrawingCacheEnabled(true);

@@ -4,17 +4,17 @@ public class Monument {
 
     private String Name;
     private String Coordinates;
-    private byte[] Picture;
+    private String Picture;
     private String Description;
 
-    public Monument(String name, String coordinates, byte[] picture, String description){
+    public Monument(String name, String coordinates, String picture, String description){
         this.Coordinates = coordinates;
         this.Name = name;
         this.Picture = picture;
         this.Description = description;
     }
 
-    public byte[] getPicture() {
+    public String getPicture() {
         return Picture;
     }
 

@@ -72,7 +72,7 @@ public class Constants {
 
             public static String CreateQuery = "CREATE TABLE IF NOT EXISTS \""+TableName+"\" ( " +
                                                     "\""+Name+"\"\tTEXT NOT NULL, " +
-                                                    "\""+Picture+"\"\tBLOB, " +
+                                                    "\""+Picture+"\"\tTEXT, " +
                                                     "\""+Coordinates+"\" TEXT NOT NULL, " +
                                                     "\""+Description+"\" TEXT, " +
                                                     "PRIMARY KEY(\""+Name+"\"))";

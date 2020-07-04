@@ -61,7 +61,6 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
-        System.out.println("Queued");
     }
 
     @Override
@@ -71,7 +70,6 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
 
     @Override
     public void onResponse(String response) {
-        System.out.println("Responded");
         cl.afterCall(response);
     }
 }

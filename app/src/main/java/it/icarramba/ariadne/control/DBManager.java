@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -67,7 +69,7 @@ public class DBManager extends SQLiteOpenHelper {
         db.insertOrThrow(Constants.DBConstants.Itineraries.TableName, null, cv);
     }
 
-    private void insertMonument(String name, byte[] picture, String coordinates, String description) throws SQLException{
+    private void insertMonument(String name, String picture, String coordinates, String description) throws SQLException{
         ContentValues cv = new ContentValues();
         cv.put(Constants.DBConstants.Monuments.Name, name);
         cv.put(Constants.DBConstants.Monuments.Picture, picture);
@@ -222,7 +224,7 @@ public class DBManager extends SQLiteOpenHelper {
                 itineraryMonuments.add(
                                         new ItineraryMonument(
                                                               new Monument(cursor.getString(6), cursor.getString(8),
-                                                                            cursor.getBlob(7), cursor.getString(9)),
+                                                                            cursor.getString(7), cursor.getString(9)),
                                         cursor.getInt(4), cursor.getString(5)) );
 
                 //i have to move the cursor to the next position,

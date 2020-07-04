@@ -92,7 +92,6 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
     @Override
     public void afterCall(String response) {
 
-        System.out.println("Reposnse: "+response);
         pb.setVisibility(View.INVISIBLE);
 
         Gson gson = new Gson();
