@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 import it.icarramba.ariadne.constants.Constants;
+import it.icarramba.ariadne.entities.BootstrapRequest;
 import it.icarramba.ariadne.listeners.CloudListener;
+import it.icarramba.ariadne.tasks.BootstrapTask;
 
 public class CloudInteractor implements Response.ErrorListener, Response.Listener<String> {
 
@@ -33,6 +36,21 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
 
     public void addHeader(String headerName, String value){
         this.headers.add(headerName+","+value);
+    }
+
+    public void fogListRequest(int maxNumFog, String lat, String lon){
+
+        cl.beforeCall();
+        // TODO check if a previous list has been dowloaded and if is needed to dowlnoad a new one
+
+        BootstrapRequest req = new BootstrapRequest(Constants.Cloud.FOG_LIST_REQ, lat, lon, maxNumFog);
+        String jsonReq = (new Gson()).toJson(req);
+
+        // create async task that sends the list request, receive the response, calls the cl.afterCall()
+        // on post execute
+
+        BootstrapTask bootTask = new BootstrapTask(this.cl);
+        bootTask.execute(jsonReq);
     }
 
     public void sendRequest(String lat, String lon, String time, String  transport){

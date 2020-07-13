@@ -49,13 +49,16 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
         ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.searched_iti_title));
 
-        CloudInteractor ci = new CloudInteractor("160.80.131.74", this, this);
+        CloudInteractor ci = new CloudInteractor("160.80.129.28", this, this);
 
         //TODO if this activity is not selected starting by RicercaActivity,
         // a null pointer exception is raised
         //ArrayList<String> info = getIntent().getExtras().getStringArrayList("info");
         //System.out.println(info.get(0) + " "+ info.get(1)+" "+ info.get(2)+" "+ info.get(3));
         ci.sendRequest("1","2","10","bici");
+
+        CloudInteractor ciboot = new CloudInteractor(null, this, this);
+        ciboot.fogListRequest(3, "1234.2", "1233.3");
     }
 
     private void DrawerSetUp() {
@@ -115,5 +118,21 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         serverError.setVisibility(View.VISIBLE);
         imageError.setVisibility(View.VISIBLE);
         pb.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void afterBootstrapCall(ArrayList<String> fogIpList) {
+        /*
+        System.out.println("Nodes online ("+fogIpList.size()+"):");
+        for(String ip : fogIpList){
+            System.out.println(ip);
+        }
+         */
+
+    }
+
+    @Override
+    public void beforeBootstrapCall() {
+        //bootstrap not called here
     }
 }
