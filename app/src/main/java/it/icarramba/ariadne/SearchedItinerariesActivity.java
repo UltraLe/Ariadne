@@ -122,12 +122,11 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
     @Override
     public void afterBootstrapCall(ArrayList<String> fogIpList) {
-        /*
+
         System.out.println("Nodes online ("+fogIpList.size()+"):");
         for(String ip : fogIpList){
             System.out.println(ip);
         }
-         */
 
     }
 

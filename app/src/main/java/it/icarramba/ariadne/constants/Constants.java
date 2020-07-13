@@ -4,7 +4,6 @@ public class Constants {
 
     public static String ItineraryType_Saved = "SAVED";
     public static String ItineraryType_LastSearched = "LAST";
-    public static String fog_list_name = "";
 
     //Cloud's constants
     public static class Cloud{
@@ -17,7 +16,8 @@ public class Constants {
         public static final String TIME = "interval";
         public static final String FOG_LIST_REQ = "LIST";
         public static final int BOOTSTRAP_PORT = 11111;
-        public static final String BOOTSTRAP_IP = "160.80.129.28";
+        public static final String BOOTSTRAP_IP = "172.74.3.189";
+        public static final int HOURS_BEFORE_NEW_BOOTREQ = 6;
     }
 
     //Data base's constants

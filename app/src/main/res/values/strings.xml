@@ -27,6 +27,9 @@
     <string name="itin_saved">Itinerary Saved Correctly!</string>
     <string name="itin_deleted">Itinerary Deleted Correctly!</string>
     <string name="server_error">There was an error with your request :(</string>
-    <string name="lasts_searched">Lasts Searched</string>
+    <string name="lasts_searched">There was an error with your request :(</string>
+    <string name="shared_pref">SharedPrefFile</string>
+    <string name="shared_key_date">NotUpdateUntil</string>
+    <string name="shared_key_list">FogNodeList</string>
 
 </resources>
