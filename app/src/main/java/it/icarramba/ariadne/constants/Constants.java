@@ -16,7 +16,7 @@ public class Constants {
         public static final String TIME = "interval";
         public static final String FOG_LIST_REQ = "LIST";
         public static final int BOOTSTRAP_PORT = 11111;
-        public static final String BOOTSTRAP_IP = "172.74.3.189";
+        public static final String BOOTSTRAP_IP = "172.74.2.203";
         public static final int HOURS_BEFORE_NEW_BOOTREQ = 6;
     }
 

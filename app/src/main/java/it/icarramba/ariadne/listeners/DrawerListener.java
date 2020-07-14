@@ -34,9 +34,6 @@ public class DrawerListener implements NavigationView.OnNavigationItemSelectedLi
             case R.id.saved:
                 context.startActivity(new Intent(context, SavedItinerariesActivity.class));
                 break;
-            case R.id.mycart:
-                context.startActivity(new Intent(context, SearchedItinerariesActivity.class));
-                break;
             case R.id.lasts:
                 context.startActivity(new Intent(context, LastItinerariesActivity.class));
                 break;

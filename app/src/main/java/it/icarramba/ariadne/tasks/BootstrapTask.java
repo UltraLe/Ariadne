@@ -68,6 +68,7 @@ public class BootstrapTask extends AsyncTask<String, Void, String> {
         //the value will be the date value
         //the values will be saved only if a non void json array is received
         if(response.length() > 5) {
+            //TODO not working for api < 26
             LocalDateTime now = java.time.LocalDateTime.now();
             System.out.println(now.toString());
 

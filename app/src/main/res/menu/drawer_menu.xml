@@ -5,10 +5,8 @@
         android:title="@string/search_drawer_str"/>
     <item android:id="@+id/saved"
         android:title="@string/saved_drawer_str"/>
-    <item android:id="@+id/mycart"
-        android:title="@string/searched_drawer_str"/>
     <item
         android:id="@+id/lasts"
-        android:title="@string/lasts_searched" />
+        android:title="@string/last_iti_title" />
 
 </menu>

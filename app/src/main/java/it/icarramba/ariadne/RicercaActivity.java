@@ -103,7 +103,7 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
 
     }
 
-    //Funzione per l'inizio della ricerca dell posizione
+    //Funzione per l'inizio della ricerca della posizione
     private void startSearchLocation() {
         positionView = findViewById(R.id.positionText);
         Task<Location> locationTask = fusedLocationClient.getLastLocation();
@@ -203,7 +203,7 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
 
     }
 
-    //Chiamata epr i toggle
+    //Chiamata per i toggle
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 

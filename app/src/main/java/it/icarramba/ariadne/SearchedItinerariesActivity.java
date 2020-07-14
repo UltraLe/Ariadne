@@ -35,6 +35,8 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
     private ProgressBar pb;
     private TextView serverError;
     private ImageView imageError;
+    private ArrayList<String> fogList;
+    private int last = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +51,11 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
         ((TextView)findViewById(R.id.tvSITitle)).setText(getString(R.string.searched_iti_title));
 
-        CloudInteractor ci = new CloudInteractor("160.80.129.28", this, this);
-
-        //TODO if this activity is not selected starting by RicercaActivity,
-        // a null pointer exception is raised
-        //ArrayList<String> info = getIntent().getExtras().getStringArrayList("info");
-        //System.out.println(info.get(0) + " "+ info.get(1)+" "+ info.get(2)+" "+ info.get(3));
-        ci.sendRequest("1","2","10","bici");
-
+        //Ask for fog list
         CloudInteractor ciboot = new CloudInteractor(null, this, this);
         ciboot.fogListRequest(3, "1234.2", "1233.3");
+
+
     }
 
     private void DrawerSetUp() {
@@ -114,14 +111,31 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
     @Override
     public void onError() {
-        //making invisible the loading animation
-        serverError.setVisibility(View.VISIBLE);
-        imageError.setVisibility(View.VISIBLE);
-        pb.setVisibility(View.INVISIBLE);
+
+        last++;
+
+        if (last < fogList.size()) {
+            System.out.println("tried " + fogList.get(last) + last);
+            call_fog(fogList.get(last));
+        } else {
+            System.out.println("Failed");
+            //making invisible the loading animation
+            serverError.setVisibility(View.VISIBLE);
+            imageError.setVisibility(View.VISIBLE);
+            pb.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public void afterBootstrapCall(ArrayList<String> fogIpList) {
+
+        fogList = fogIpList;
+
+        //Make some calls fail
+        fogList.set(0, "123.123.123.123");
+        fogList.set(1, "123.123.123.123");
+
+        call_fog(fogList.get(0));
 
         System.out.println("Nodes online ("+fogIpList.size()+"):");
         for(String ip : fogIpList){
@@ -130,6 +144,14 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
     }
 
+    public void call_fog(String ip) {
+
+        CloudInteractor ci = new CloudInteractor(ip, this, this);
+
+        ArrayList<String> info = getIntent().getExtras().getStringArrayList("info");
+        //System.out.println(info.get(0) + " "+ info.get(1)+" "+ info.get(2)+" "+ info.get(3));
+        ci.sendRequest(info.get(0), info.get(1), info.get(2), info.get(3));
+    }
     @Override
     public void beforeBootstrapCall() {
         //bootstrap not called here
