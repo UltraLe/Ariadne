@@ -187,7 +187,7 @@ public class RicercaActivity extends AppCompatActivity implements TextView.OnEdi
             }
             //in minutes
             String[] splitted = timeString.split(":");
-            int chosenIntervall = Integer.parseInt(splitted[0])*60+Integer.parseInt(splitted[1]);
+            int chosenIntervall = Integer.parseInt(splitted[0])*60*60+Integer.parseInt(splitted[1])*60;
 
             //Send info to other activity
             ArrayList<String> lista = new ArrayList<>();

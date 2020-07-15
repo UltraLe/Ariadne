@@ -98,13 +98,13 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
         bootTask.execute(jsonReq);
     }
 
-    public void sendRequest(String lat, String lon, String time, String  transport){
+    public void sendRequest(String lat, String lon, String time, String  transport, int PORT){
 
         cl.beforeCall();
 
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        String url ="http://"+this.domain+":"+Constants.Cloud.SERVER_PORT+"/?"+ Constants.Cloud.LAT+"="+lat+
+        String url ="http://"+this.domain+":"+PORT+"/?"+ Constants.Cloud.LAT+"="+lat+
                     "&"+Constants.Cloud.LON+"="+lon+"&"+Constants.Cloud.TIME+"="+time+
                     "&"+Constants.Cloud.TRA+"="+transport;
 

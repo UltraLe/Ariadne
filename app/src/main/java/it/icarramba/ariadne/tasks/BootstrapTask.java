@@ -57,6 +57,7 @@ public class BootstrapTask extends AsyncTask<String, Void, String> {
             bis = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             response = bis.readLine();
+            System.out.println("LIST: "+response);
             bis.close();
             socket.close();
 

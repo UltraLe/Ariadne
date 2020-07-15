@@ -37,7 +37,7 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
     private ImageView imageError;
     private ArrayList<String> fogList;
     private int last = 0;
-
+    private boolean lastTry = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,17 +112,24 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
     @Override
     public void onError() {
 
-        last++;
-
-        if (last < fogList.size()) {
-            System.out.println("tried " + fogList.get(last) + last);
-            call_fog(fogList.get(last));
-        } else {
+        if (lastTry) {
             System.out.println("Failed");
             //making invisible the loading animation
             serverError.setVisibility(View.VISIBLE);
             imageError.setVisibility(View.VISIBLE);
             pb.setVisibility(View.INVISIBLE);
+            return;
+        }
+        last++;
+
+        if (last < fogList.size()) {
+            System.out.println("tried " + fogList.get(last) + last);
+            call_fog(fogList.get(last), Constants.Cloud.SERVER_PORT_HERMES);
+        } else {
+            lastTry = true;
+            call_fog(Constants.Cloud.ULIXES_IP, Constants.Cloud.SERVER_PORT_ULIXES);
+
+
         }
     }
 
@@ -132,10 +139,10 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         fogList = fogIpList;
 
         //Make some calls fail
-        fogList.set(0, "123.123.123.123");
-        fogList.set(1, "123.123.123.123");
+        //fogList.set(0, "123.123.123.123");
+        //fogList.set(1, "123.123.123.123");
 
-        call_fog(fogList.get(0));
+        call_fog(fogList.get(0), Constants.Cloud.SERVER_PORT_HERMES);
 
         System.out.println("Nodes online ("+fogIpList.size()+"):");
         for(String ip : fogIpList){
@@ -144,13 +151,13 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
 
     }
 
-    public void call_fog(String ip) {
+    public void call_fog(String ip, int PORT) {
 
         CloudInteractor ci = new CloudInteractor(ip, this, this);
 
         ArrayList<String> info = getIntent().getExtras().getStringArrayList("info");
         //System.out.println(info.get(0) + " "+ info.get(1)+" "+ info.get(2)+" "+ info.get(3));
-        ci.sendRequest(info.get(0), info.get(1), info.get(2), info.get(3));
+        ci.sendRequest(info.get(0), info.get(1), info.get(2), info.get(3), PORT);
     }
     @Override
     public void beforeBootstrapCall() {
