@@ -10,14 +10,14 @@ public class Constants {
 
         public static final int SERVER_PORT_ULIXES = 5005;
         public static final int SERVER_PORT_HERMES = 8888;
-        public static final String ULIXES_IP = "172.74.2.203";
+        public static final String ULIXES_IP = "ulixes-resvag.ddns.net";
         public static final String LAT = "latitude";
         public static final String LON = "longitude";
         public static final String TRA = "trans";
         public static final String TIME = "interval";
         public static final String FOG_LIST_REQ = "LIST";
         public static final int BOOTSTRAP_PORT = 11111;
-        public static final String BOOTSTRAP_IP = "172.74.3.189";
+        public static final String BOOTSTRAP_IP = "pythia-resvag.cloudns.cl";
         public static final int HOURS_BEFORE_NEW_BOOTREQ = 6;
     }
 
