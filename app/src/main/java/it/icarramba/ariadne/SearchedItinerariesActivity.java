@@ -142,11 +142,16 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         //fogList.set(0, "123.123.123.123");
         //fogList.set(1, "123.123.123.123");
 
-        call_fog(fogList.get(0), Constants.Cloud.SERVER_PORT_HERMES);
-
         System.out.println("Nodes online ("+fogIpList.size()+"):");
         for(String ip : fogIpList){
             System.out.println(ip);
+        }
+
+        if (fogList.size() != 0)
+            call_fog(fogList.get(0), Constants.Cloud.SERVER_PORT_HERMES);
+        else {
+            lastTry = true;
+            call_fog(Constants.Cloud.ULIXES_IP, Constants.Cloud.SERVER_PORT_ULIXES);
         }
 
     }
@@ -156,7 +161,7 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         CloudInteractor ci = new CloudInteractor(ip, this, this);
 
         ArrayList<String> info = getIntent().getExtras().getStringArrayList("info");
-        //System.out.println(info.get(0) + " "+ info.get(1)+" "+ info.get(2)+" "+ info.get(3));
+        System.out.println(info.get(0) + " "+ info.get(1)+" "+ info.get(2)+" "+ info.get(3));
         ci.sendRequest(info.get(0), info.get(1), info.get(2), info.get(3), PORT);
     }
     @Override
