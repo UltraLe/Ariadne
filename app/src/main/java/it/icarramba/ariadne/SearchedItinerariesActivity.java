@@ -129,7 +129,6 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
             lastTry = true;
             call_fog(Constants.Cloud.ULIXES_IP, Constants.Cloud.SERVER_PORT_ULIXES);
 
-
         }
     }
 

@@ -45,6 +45,7 @@ public class LastItinerariesActivity extends AppCompatActivity {
         AllItinerariesAdapter adapter = new AllItinerariesAdapter(itinLast,this, true);
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rv.setAdapter(adapter);
+
     }
 
     private void DrawerSetUp() {

@@ -31,5 +31,6 @@
     <string name="shared_pref">SharedPrefFile</string>
     <string name="shared_key_date">NotUpdateUntil</string>
     <string name="shared_key_list">FogNodeList</string>
+    <string name="search_str">Search itinerary</string>
 
 </resources>
