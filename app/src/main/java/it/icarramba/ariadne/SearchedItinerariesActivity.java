@@ -165,6 +165,7 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
     }
     @Override
     public void beforeBootstrapCall() {
-        //bootstrap not called here
+        //making visible the loading animation
+        pb.setVisibility(View.VISIBLE);
     }
 }

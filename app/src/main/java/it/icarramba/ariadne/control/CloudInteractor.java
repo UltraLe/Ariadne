@@ -49,6 +49,8 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void fogListRequest(int maxNumFog, String lat, String lon){
 
+        System.out.println("REQUESTING NODES IPS");
+
         cl.beforeBootstrapCall();
         SharedPreferences sh = context.getSharedPreferences(context.getString(R.string.shared_pref),
                                                             Context.MODE_PRIVATE);
@@ -64,7 +66,7 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
             LocalDateTime date = LocalDateTime.parse(updateTime, formatter);
 
             if (date.compareTo(java.time.LocalDateTime.now()) > 0) {
-                //System.out.println("Bootstrap call  not needed!");
+                System.out.println("Bootstrap call  not needed!");
                 //update is NOT needed yet.
                 //Retrieving node list
                 String nodeList = sh.getString(context.getString(R.string.shared_key_list), null);
@@ -87,7 +89,7 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
             }
         }
 
-        //System.out.println("No shared preferences found!");
+        System.out.println("No shared preferences found!");
         //if im here a new request has to be computed
         BootstrapRequest req = new BootstrapRequest(Constants.Cloud.FOG_LIST_REQ, lat, lon, maxNumFog);
         String jsonReq = (new Gson()).toJson(req);
@@ -107,6 +109,8 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
         String url ="http://"+this.domain+":"+PORT+"/?"+ Constants.Cloud.LAT+"="+lat+
                     "&"+Constants.Cloud.LON+"="+lon+"&"+Constants.Cloud.TIME+"="+time+
                     "&"+Constants.Cloud.TRA+"="+transport;
+
+        System.out.println("REQUESTED URL: "+url);
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, this, this) {

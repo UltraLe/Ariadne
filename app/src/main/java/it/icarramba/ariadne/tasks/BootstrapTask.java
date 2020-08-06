@@ -38,6 +38,7 @@ public class BootstrapTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... jsonReqs) {
 
+        cl.beforeBootstrapCall();
         String response = "";
         String jsonReq = jsonReqs[0];
 
@@ -45,7 +46,14 @@ public class BootstrapTask extends AsyncTask<String, Void, String> {
 
         Socket socket = null;
         try {
+
+            System.out.println("Trying to interact with bootstrap");
+
             socket = new Socket(Constants.Cloud.BOOTSTRAP_IP, Constants.Cloud.BOOTSTRAP_PORT);
+            //Se entro 5 sec. il bootstrap non risponde, termina
+            socket.setSoTimeout(5*1000);
+
+            System.out.println("Connected to: "+Constants.Cloud.BOOTSTRAP_IP);
 
             //sending request to the bootstrap
             OutputStream outstream = socket.getOutputStream();
@@ -61,8 +69,9 @@ public class BootstrapTask extends AsyncTask<String, Void, String> {
             bis.close();
             socket.close();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return response;
         }
 
         //now saving the response in shared preferences

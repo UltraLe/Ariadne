@@ -48,6 +48,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class RicercaActivity extends AppCompatActivity implements TextView.OnEditorActionListener,OnSuccessListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener{
