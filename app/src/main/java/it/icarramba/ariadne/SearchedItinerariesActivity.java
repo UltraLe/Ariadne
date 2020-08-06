@@ -98,15 +98,20 @@ public class SearchedItinerariesActivity extends AppCompatActivity implements Cl
         Itinerary[] serverItins;
         serverItins = gson.fromJson(response, Itinerary[].class);
 
-        for(Itinerary itin : serverItins) {
-            itin.setType(Constants.ItineraryType_LastSearched);
-            DBManager.getInstance(this).insertItinerary(itin);
-        }
+        if(serverItins.length > 0 && serverItins[0].getID() != null){
+            for(Itinerary itin : serverItins) {
+                itin.setType(Constants.ItineraryType_LastSearched);
+                DBManager.getInstance(this).insertItinerary(itin);
+            }
 
-        rv = findViewById(R.id.rv1);
-        AllItinerariesAdapter adapter = new AllItinerariesAdapter(serverItins,this, true);
-        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(adapter);
+            rv = findViewById(R.id.rv1);
+            AllItinerariesAdapter adapter = new AllItinerariesAdapter(serverItins,this, true);
+            rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            rv.setAdapter(adapter);
+        }else{
+            serverError.setText(R.string.noitin_found);
+            serverError.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

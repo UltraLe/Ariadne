@@ -116,6 +116,8 @@ public class DBManager extends SQLiteOpenHelper {
                 Constants.DBConstants.Itineraries.ID+" = '"+ itinID+"';";
 
         db.execSQL(query);
+
+        //System.out.println("Updated Type!");
     }
 
     //The server into the cloud will return a list of itinerary,
@@ -126,24 +128,25 @@ public class DBManager extends SQLiteOpenHelper {
 
             //First of all the itinerary has to be saved
             this.insertItinerary(itinerary.getID(), itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
-            //retrieve the ID (auto)assigned to the itinerary
-
-
             //Inserting all the monuments associated to the itinerary
             for (ItineraryMonument itiMon : itinerary.getItineraryMonuments()) {
-                this.insertMonument(itiMon.getMonument().getName(), itiMon.getMonument().getPicture(),
-                        itiMon.getMonument().getCoordinates(), itiMon.getMonument().getDescription());
+                try {
+                    this.insertMonument(itiMon.getMonument().getName(), itiMon.getMonument().getPicture(),
+                            itiMon.getMonument().getCoordinates(), itiMon.getMonument().getDescription());
+                } catch (SQLiteConstraintException s) {
+                    //ignore
+                }
             }
-
             //Inserting now the itineraryMonuments
             for (ItineraryMonument itiMon : itinerary.getItineraryMonuments()) {
                 this.insertItineraryMonument(itinerary.getID(), itiMon.getMonument().getName(), itiMon.getPosition(), itiMon.getExpectedArrTime());
             }
-        }catch (SQLiteConstraintException s){
-            //ignore
+
         }catch (SQLException e){
             throw e;
         }
+
+        System.out.println("Inserted: "+itinerary.getID()+" that has "+itinerary.getItineraryMonuments().length+" Monuments ("+itinerary.getType()+").");
 
     }
 
@@ -198,7 +201,8 @@ public class DBManager extends SQLiteOpenHelper {
 
         Vector<Itinerary> itineraries = new Vector<>();
 
-        String query = "select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, M.Picture, M.Coordinates, M.Description " +
+        String query =  "select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, 'pict', M.Coordinates, M.Description " +
+                        //"select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, M.Picture, M.Coordinates, M.Description " +
                         "from " +Constants.DBConstants.Itineraries.TableName+" I join "
                                 +Constants.DBConstants.ItineraryMonuments.TableName+" IM on I.ID = IM."+Constants.DBConstants.ItineraryMonuments.ItineraryID+" join "
                                 +Constants.DBConstants.Monuments.TableName+" M on IM.MonumentName = M."+Constants.DBConstants.Monuments.Name+
@@ -218,15 +222,34 @@ public class DBManager extends SQLiteOpenHelper {
 
         do{
             String currentItineraryID = cursor.getString(0);
-
             //For each itinerary, find the monument associated and populate 'itineraryMonuments'
             while(true){
+                int start = 1;
+                int step = 1000000;
+
+                String picture = "";
+                String subpicture;
+                do {
+                    subpicture = "";
+                    String pictureQuery = "select SUBSTR(Picture, " + start + ", " + step + ") from " + Constants.DBConstants.Monuments.TableName +
+                            " where " + Constants.DBConstants.Monuments.Name + " = '" + cursor.getString(6) + "';";
+                    Cursor pictureCursor = db.rawQuery(pictureQuery, null);
+                    if (!(pictureCursor.moveToFirst()) || pictureCursor.getCount() == 0) {
+                        pictureCursor.close();
+                        subpicture = "";
+                    } else {
+                        subpicture = pictureCursor.getString(0);
+                        pictureCursor.close();
+                    }
+                    start += step;
+                    picture += subpicture;
+                }while(subpicture.length() > 0);
+
                 itineraryMonuments.add(
                                         new ItineraryMonument(
                                                               new Monument(cursor.getString(6), cursor.getString(8),
-                                                                            cursor.getString(7), cursor.getString(9)),
+                                                                            picture, cursor.getString(9)),
                                         cursor.getInt(4), cursor.getString(5)) );
-
                 //i have to move the cursor to the next position,
                 //if the cursor is empty, move back and break...
                 boolean ret = cursor.moveToNext();
@@ -241,7 +264,6 @@ public class DBManager extends SQLiteOpenHelper {
                     break;
                 }
             }
-
             ItineraryMonument[] itinMonFound;
             if(itineraryMonuments.isEmpty()){
                 itinMonFound = null;

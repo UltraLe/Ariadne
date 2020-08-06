@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ariadne</string>
+    <string name="app_name">Resvag</string>
     <string name="premission_required_str">Give location permission to use all features</string>
     <string name="position_str">Current position</string>
     <string name="position_hint_str">Insert start address</string>
@@ -32,5 +32,6 @@
     <string name="shared_key_date">NotUpdateUntil</string>
     <string name="shared_key_list">FogNodeList</string>
     <string name="search_str">Search itinerary</string>
+    <string name="noitin_found">No itineraries has been found from your location and settings</string>
 
 </resources>
