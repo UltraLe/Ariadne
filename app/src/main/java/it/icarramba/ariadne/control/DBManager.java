@@ -127,7 +127,13 @@ public class DBManager extends SQLiteOpenHelper {
         try {
 
             //First of all the itinerary has to be saved
-            this.insertItinerary(itinerary.getID(), itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
+            System.out.println("ID: "+itinerary.getID());
+            try {
+                this.insertItinerary(itinerary.getID(), itinerary.getType(), itinerary.getDeparture(), itinerary.getMeansOfTransp());
+            }catch (SQLiteConstraintException s) {
+                //itin is already in db, return
+                return;
+            }
             //Inserting all the monuments associated to the itinerary
             for (ItineraryMonument itiMon : itinerary.getItineraryMonuments()) {
                 try {

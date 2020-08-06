@@ -18,7 +18,6 @@ public class Constants {
         public static final String FOG_LIST_REQ = "LIST";
         public static final int BOOTSTRAP_PORT = 11111;
         public static final String BOOTSTRAP_IP = "pythia-resvag.cloudns.cl";
-        public static final String DNS_SERVER_IP = "ns101.cloudns.net";
         public static final int HOURS_BEFORE_NEW_BOOTREQ = 6;
     }
 

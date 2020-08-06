@@ -132,6 +132,7 @@ public class CloudInteractor implements Response.ErrorListener, Response.Listene
 
     @Override
     public void onErrorResponse(VolleyError error) {
+        System.out.println("VOLLEY ERR: "+error.toString());
         cl.onError();
     }
 
