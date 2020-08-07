@@ -45,12 +45,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="84dp"
             android:ems="10"
-            android:inputType="time"
+            android:hint="Hours:Minutes -> 00:00"
+            android:imeOptions="actionDone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/positionText"
-            android:imeOptions="actionDone"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/positionText" />
 
         <ToggleButton
             android:id="@+id/footButton"
