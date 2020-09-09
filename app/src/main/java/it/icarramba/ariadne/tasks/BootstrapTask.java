@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -49,9 +50,12 @@ public class BootstrapTask extends AsyncTask<String, Void, String> {
 
             System.out.println("Trying to interact with bootstrap");
 
-            socket = new Socket(Constants.Cloud.BOOTSTRAP_IP, Constants.Cloud.BOOTSTRAP_PORT);
+            //socket = new Socket(Constants.Cloud.BOOTSTRAP_IP, Constants.Cloud.BOOTSTRAP_PORT);
+            //socket = TimedSocket.getSocket(Constants.Cloud.BOOTSTRAP_IP, Constants.Cloud.BOOTSTRAP_IP, 5*1000);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(Constants.Cloud.BOOTSTRAP_IP, Constants.Cloud.BOOTSTRAP_PORT), 5*1000);
             //Se entro 5 sec. il bootstrap non risponde, termina
-            socket.setSoTimeout(5*1000);
+            //socket.setSoTimeout(5*1000);
 
             System.out.println("Connected to: "+Constants.Cloud.BOOTSTRAP_IP);
 

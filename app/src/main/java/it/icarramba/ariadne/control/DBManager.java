@@ -206,14 +206,26 @@ public class DBManager extends SQLiteOpenHelper {
     public Itinerary[] getItineraries(String type) throws SQLException{
 
         Vector<Itinerary> itineraries = new Vector<>();
+        String query;
 
-        String query =  "select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, 'pict', M.Coordinates, M.Description " +
-                        //"select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, M.Picture, M.Coordinates, M.Description " +
-                        "from " +Constants.DBConstants.Itineraries.TableName+" I join "
-                                +Constants.DBConstants.ItineraryMonuments.TableName+" IM on I.ID = IM."+Constants.DBConstants.ItineraryMonuments.ItineraryID+" join "
-                                +Constants.DBConstants.Monuments.TableName+" M on IM.MonumentName = M."+Constants.DBConstants.Monuments.Name+
-                         " where I.Type = '"+type+"' "+
-                         "ORDER BY I."+Constants.DBConstants.Itineraries.ID+", IM."+Constants.DBConstants.ItineraryMonuments.Position+";";
+        if(type.equals(Constants.ItineraryType_LastSearched)){
+            //mostra gli ultimo 10 itinerari
+            query =  "select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, 'pict', M.Coordinates, M.Description " +
+                    //"select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, M.Picture, M.Coordinates, M.Description " +
+                    "from " +Constants.DBConstants.Itineraries.TableName+" I join "
+                    +Constants.DBConstants.ItineraryMonuments.TableName+" IM on I.ID = IM."+Constants.DBConstants.ItineraryMonuments.ItineraryID+" join "
+                    +Constants.DBConstants.Monuments.TableName+" M on IM.MonumentName = M."+Constants.DBConstants.Monuments.Name+
+                    " where I.Type = '"+type+"' "+
+                    "ORDER BY I."+Constants.DBConstants.Itineraries.ID+" DESC, IM."+Constants.DBConstants.ItineraryMonuments.Position+" limit 10;";
+        }else{
+            query =  "select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, 'pict', M.Coordinates, M.Description " +
+                    //"select I.ID, I.Type, I.Departure, I.MeansOfTransp, IM.Position, IM.ExpectedArrTime, M.Name, M.Picture, M.Coordinates, M.Description " +
+                    "from " +Constants.DBConstants.Itineraries.TableName+" I join "
+                    +Constants.DBConstants.ItineraryMonuments.TableName+" IM on I.ID = IM."+Constants.DBConstants.ItineraryMonuments.ItineraryID+" join "
+                    +Constants.DBConstants.Monuments.TableName+" M on IM.MonumentName = M."+Constants.DBConstants.Monuments.Name+
+                    " where I.Type = '"+type+"' "+
+                    "ORDER BY I."+Constants.DBConstants.Itineraries.ID+", IM."+Constants.DBConstants.ItineraryMonuments.Position+";";
+        }
 
         Cursor cursor = db.rawQuery(query, null);
         //printQuery(cursor);
